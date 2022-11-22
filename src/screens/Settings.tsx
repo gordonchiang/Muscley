@@ -6,6 +6,6 @@ const Settings = () => {
       <Text>Settings placeholder</Text>
     </View>
   );
-}
+};
 
 export default Settings;

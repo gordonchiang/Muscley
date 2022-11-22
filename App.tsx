@@ -8,6 +8,6 @@ const App = () => {
       <RootDrawer />
     </NavigationContainer>
   );
-}
+};
 
 export default App;

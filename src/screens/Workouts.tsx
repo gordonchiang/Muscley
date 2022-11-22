@@ -6,6 +6,6 @@ const Workouts = () => {
       <Text>Workouts placeholder</Text>
     </View>
   );
-}
+};
 
 export default Workouts;

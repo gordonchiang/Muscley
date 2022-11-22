@@ -1,0 +1,58 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": { "jsx": true }
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "array-bracket-spacing": [ "warn", "always" ],
+    "comma-dangle": [ "warn", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "never"
+    } ],
+    "eol-last": [ "error", "always" ],
+    "indent": [ "error", 2 ],
+    "jsx-quotes": [ "warn", "prefer-single" ],
+    "linebreak-style": [ "error", "unix" ],
+    "object-curly-spacing": [ "warn", "always" ],
+    "quotes": [ "warn", "single" ],
+    "react/jsx-curly-newline": [ "warn", "consistent" ],
+    "react/jsx-curly-spacing": [ "warn", {
+      "when": "always",
+      "children": true,
+      "attributes": true
+    } ],
+    "react/jsx-tag-spacing": [ "warn", {
+      "closingSlash": "never",
+      "beforeSelfClosing": "always",
+      "afterOpening": "never",
+      "beforeClosing": "never"
+    } ],
+    "semi": [ "warn", "always" ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

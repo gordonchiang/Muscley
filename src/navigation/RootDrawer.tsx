@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import type { RootDrawerParameters } from './types';
 import WorkoutsStack from './WorkoutsStack';
-import Settings from '../screens/Settings'
+import Settings from '../screens/Settings';
 
 const Drawer = createDrawerNavigator<RootDrawerParameters>();
 
