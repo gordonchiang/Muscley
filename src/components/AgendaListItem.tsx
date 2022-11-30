@@ -22,6 +22,7 @@ const AgendaListItem = (props: AgendaListItemProps) => {
   return (
     <View>
       <Text>Placeholder for not empty item</Text>
+      <Text>{ item.title }</Text>
     </View>
   );
 };
