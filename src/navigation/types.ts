@@ -1,13 +1,13 @@
 type RootDrawerParameters = {
-  WorkoutsStack: undefined;
+  CalendarStack: undefined;
   Settings: undefined;
 };
 
-type WorkoutsStackParameters = {
-  Workouts: undefined;
+type CalendarStackParameters = {
+  Calendar: undefined;
 }
 
 export {
   RootDrawerParameters,
-  WorkoutsStackParameters,
+  CalendarStackParameters,
 };
