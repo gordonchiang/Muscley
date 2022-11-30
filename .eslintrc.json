@@ -34,6 +34,7 @@
     "indent": [ "error", 2 ],
     "jsx-quotes": [ "warn", "prefer-single" ],
     "linebreak-style": [ "error", "unix" ],
+    "no-console": [ "warn" ],
     "object-curly-spacing": [ "warn", "always" ],
     "quotes": [ "warn", "single" ],
     "react/jsx-curly-newline": [ "warn", "consistent" ],
