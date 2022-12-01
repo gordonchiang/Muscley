@@ -5,6 +5,7 @@
   "scripts": {
     "start": "expo start",
     "clear": "npx expo start --clear",
+    "prod": "npx expo start --no-dev --minify",
     "lint": "npx eslint ."
   },
   "husky": {
