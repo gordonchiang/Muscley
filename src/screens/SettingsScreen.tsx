@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-const Settings = () => {
+const SettingsScreen = () => {
   return (
     <View>
       <Text>Settings placeholder</Text>
@@ -8,4 +8,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default SettingsScreen;

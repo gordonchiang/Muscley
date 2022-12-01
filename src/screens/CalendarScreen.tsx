@@ -24,7 +24,7 @@ const getItems = (dateString: string) => {
   return ITEMS[dateString];
 };
 
-const Calendar = () => {
+const CalendarScreen = () => {
   const today = new Date();
   const todayDateString = dateToDateString(today);
 
@@ -85,4 +85,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default CalendarScreen;
