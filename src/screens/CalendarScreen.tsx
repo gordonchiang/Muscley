@@ -6,8 +6,8 @@ import AgendaListItem from '../components/AgendaListItem';
 import { dateToDateString } from '../utils/dateFunctions';
 
 const ITEMS: Record<string, any> = {
-  '2022-12-01': {
-    title: '2022-12-01',
+  '2022-12-10': {
+    title: '2022-12-10',
     data: [ {
       title: 'placeholder',
     } ],

@@ -1,13 +1,14 @@
-type RootDrawerParameters = {
+type RootDrawerParamList = {
   CalendarStack: undefined;
   Settings: undefined;
 };
 
-type CalendarStackParameters = {
+type CalendarStackParamList = {
   Calendar: undefined;
+  Modal: undefined;
 }
 
 export {
-  RootDrawerParameters,
-  CalendarStackParameters,
+  RootDrawerParamList,
+  CalendarStackParamList,
 };

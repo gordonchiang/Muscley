@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { memo } from 'react';
-import { View, Text } from 'react-native';
+import { Button, View, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { CalendarStackParamList } from '../navigation/types';
 
 interface AgendaListItemProps {
   item: any;
@@ -10,11 +13,18 @@ const isEmpty = (obj: any) => [ Object, Array ].includes((obj || {}).constructor
 
 const AgendaListItem = (props: AgendaListItemProps) => {
   const { item } = props;
+  const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
 
   if (isEmpty(item)) {
     return (
       <View>
-        <Text>Placeholder for empty item</Text>
+        <Text>Empty day</Text>
+        <Button
+          title='Edit Day'
+          onPress={ () => {
+            navigation.navigate('Modal');
+          } }
+        />
       </View>
     );
   }

@@ -1,9 +1,9 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import type { RootDrawerParameters } from './types';
+import type { RootDrawerParamList } from './types';
 import CalendarStack from './CalendarStack';
 import SettingsScreen from '../screens/SettingsScreen';
 
-const Drawer = createDrawerNavigator<RootDrawerParameters>();
+const Drawer = createDrawerNavigator<RootDrawerParamList>();
 
 const RootDrawer = () => {
   return (
