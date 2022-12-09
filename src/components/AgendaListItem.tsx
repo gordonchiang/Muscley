@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { memo } from 'react';
 import { Button, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -7,12 +6,13 @@ import type { CalendarStackParamList } from '../navigation/types';
 
 interface AgendaListItemProps {
   item: any;
+  dateString: string;
 }
 
 const isEmpty = (obj: any) => [ Object, Array ].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 
 const AgendaListItem = (props: AgendaListItemProps) => {
-  const { item } = props;
+  const { item, dateString } = props;
   const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
 
   if (isEmpty(item)) {
@@ -22,7 +22,7 @@ const AgendaListItem = (props: AgendaListItemProps) => {
         <Button
           title='Edit Day'
           onPress={ () => {
-            navigation.navigate('Modal');
+            navigation.navigate('EditDay', { dateString });
           } }
         />
       </View>

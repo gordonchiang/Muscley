@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
@@ -56,8 +55,9 @@ const CalendarScreen = () => {
     changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });
   }, []);
 
-  const renderItem = useCallback(({ item }: any) => {
-    return <AgendaListItem item={ item } />;
+  const renderItem = useCallback((props: any) => {
+    const { item, section: { title: dateString } } = props;
+    return <AgendaListItem item={ item } dateString={ dateString } />;
   }, []);
 
   return (
