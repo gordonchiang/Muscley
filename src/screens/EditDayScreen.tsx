@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { EditDayScreenProps } from '../navigation/types';
 
 const EditDayScreen = (props: EditDayScreenProps) => {
@@ -18,9 +19,23 @@ const EditDayScreen = (props: EditDayScreenProps) => {
       <Text></Text>
       <Button
         title='Add Exercise'
-        onPress={ () => {
-          console.log(dateString, text);
-          navigation.goBack();
+        onPress={ async () => {
+          try {
+            const jsonValue = await AsyncStorage.getItem(dateString);
+            const oldItem = jsonValue ? JSON.parse(jsonValue) : null; 
+
+            const newItem = {
+              title: oldItem?.title || dateString,
+              data: oldItem?.data.concat({ title: text }) || [ { title: text } ],
+            };
+
+            await AsyncStorage.setItem(dateString, JSON.stringify(newItem));
+
+            navigation.navigate('Calendar', { dateString, dayItem: newItem });
+          } catch(e) {
+            console.log('Error in EditSayScreen', e);
+            navigation.goBack();
+          }
         } }
       />
     </View>

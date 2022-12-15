@@ -13,6 +13,7 @@ const isEmpty = (obj: any) => [ Object, Array ].includes((obj || {}).constructor
 
 const AgendaListItem = (props: AgendaListItemProps) => {
   const { item, dateString } = props;
+
   const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
 
   if (isEmpty(item)) {

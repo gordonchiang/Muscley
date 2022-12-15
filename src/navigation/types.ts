@@ -6,16 +6,24 @@ type RootDrawerParamList = {
 };
 
 type CalendarStackParamList = {
-  Calendar: undefined;
+  Calendar: {
+    dateString: string;
+    dayItem?: {
+      title: string,
+      data: Record<string, unknown>[],
+    }
+  };
   EditDay: {
     dateString: string;
   };
 }
 
+type CalendarScreenProps = StackScreenProps<CalendarStackParamList, 'Calendar'>;
 type EditDayScreenProps = StackScreenProps<CalendarStackParamList, 'EditDay'>;
 
 export {
   RootDrawerParamList,
   CalendarStackParamList,
+  CalendarScreenProps,
   EditDayScreenProps,
 };

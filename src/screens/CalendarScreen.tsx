@@ -1,17 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import type { CalendarScreenProps } from '../navigation/types';
 import AgendaListItem from '../components/AgendaListItem';
-import { dateToDateString } from '../utils/dateFunctions';
-
-const ITEMS: Record<string, any> = {
-  '2022-12-10': {
-    title: '2022-12-10',
-    data: [ {
-      title: 'placeholder',
-    } ],
-  },
-};
 
 const SELECTED_DATE_MARKING_PROPS = {
   selected: true,
@@ -19,40 +11,45 @@ const SELECTED_DATE_MARKING_PROPS = {
   selectedTextColor: '#FFFFFF',
 };
 
-const getItems = (dateString: string) => {
-  return ITEMS[dateString];
-};
+const CalendarScreen = (props: CalendarScreenProps) => {
+  const { dateString: initialDateString, dayItem } = props.route.params;
 
-const CalendarScreen = () => {
-  const today = new Date();
-  const todayDateString = dateToDateString(today);
-
-  const [ items, selectItems ] = useState([ getItems(todayDateString) || {
-    title: todayDateString,
+  const [ selectedDateString, selectDateString ] = useState(initialDateString);
+  const [ items, selectItems ] = useState([ dayItem || {
+    title: initialDateString,
     data: [ {} ],
   } ] );
-  const [ markedDates, changeMarkedDates ] = useState({ [todayDateString]: SELECTED_DATE_MARKING_PROPS });
+  const [ markedDates, changeMarkedDates ] = useState({ [initialDateString]: SELECTED_DATE_MARKING_PROPS });
+
+  useEffect(() => {
+    const getItems = async () => {
+      const emptyItem = {
+        title: selectedDateString,
+        data: [ {} ],
+      };
+
+      try {
+        const jsonValue = await AsyncStorage.getItem(selectedDateString);
+        selectItems([ jsonValue ? JSON.parse(jsonValue) : emptyItem ]);
+      } catch(e) {
+        console.log('Error getting saved items from CalendarScreen', e);
+        selectItems([ emptyItem ]);
+      }
+    };
+
+    getItems();
+  }, [ selectedDateString, dayItem ]);
 
   const onDayPress = useCallback(({ dateString }: { dateString: string }) => {
-    const newItems = [ getItems(dateString) || {
-      title: dateString,
-      data: [ {} ],
-    } ];
-
-    selectItems(newItems);
-    changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });
+    selectDateString(dateString);
+    changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });    
   }, []);
 
   const onDateChanged = useCallback((dateString: string, updateSource: string) => {
     if (updateSource !== 'todayPress') return;
-
-    const newItems = [ getItems(dateString) || {
-      title: dateString,
-      data: [ {} ],
-    } ];
-
-    selectItems(newItems);
-    changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });
+    
+    selectDateString(dateString);
+    changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });    
   }, []);
 
   const renderItem = useCallback((props: any) => {
@@ -63,7 +60,7 @@ const CalendarScreen = () => {
   return (
     <View style={ { flex: 1 } }>
       <CalendarProvider
-        date={ todayDateString }
+        date={ initialDateString }
         onDateChanged={ onDateChanged }
         showTodayButton= { true }
       >
