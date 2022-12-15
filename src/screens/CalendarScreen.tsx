@@ -38,7 +38,11 @@ const CalendarScreen = (props: CalendarScreenProps) => {
     };
 
     getItems();
-  }, [ selectedDateString, dayItem ]);
+  }, [ selectedDateString ]);
+
+  useEffect(() => {
+    if (dayItem) selectItems([ dayItem ]);
+  }, [ dayItem ]);
 
   const onDayPress = useCallback(({ dateString }: { dateString: string }) => {
     selectDateString(dateString);
