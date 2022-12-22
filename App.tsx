@@ -1,12 +1,16 @@
 import 'react-native-gesture-handler';
+import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
+import { store } from './src/redux/store';
 import RootDrawer from './src/navigation/RootDrawer';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <RootDrawer />
-    </NavigationContainer>
+    <Provider store={ store }>
+      <NavigationContainer>
+        <RootDrawer />
+      </NavigationContainer>
+    </Provider>
   );
 };
 

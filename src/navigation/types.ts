@@ -8,10 +8,6 @@ type RootDrawerParamList = {
 type CalendarStackParamList = {
   Calendar: {
     dateString: string;
-    dayItem?: {
-      title: string,
-      data: Record<string, unknown>[],
-    }
   };
   EditDay: {
     dateString: string;

@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { CalendarScreenProps } from '../navigation/types';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import AgendaListItem from '../components/AgendaListItem';
+import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
 
 const SELECTED_DATE_MARKING_PROPS = {
   selected: true,
@@ -12,37 +13,27 @@ const SELECTED_DATE_MARKING_PROPS = {
 };
 
 const CalendarScreen = (props: CalendarScreenProps) => {
-  const { dateString: initialDateString, dayItem } = props.route.params;
+  const { dateString: initialDateString } = props.route.params;
 
   const [ selectedDateString, selectDateString ] = useState(initialDateString);
-  const [ items, selectItems ] = useState([ dayItem || {
-    title: initialDateString,
-    data: [ {} ],
-  } ] );
   const [ markedDates, changeMarkedDates ] = useState({ [initialDateString]: SELECTED_DATE_MARKING_PROPS });
+  const items = useAppSelector((state) => {
+    const { date, data } = state.selectedDate;
+
+    return [ {
+      title: date,
+      data: [ data ? { title: data } : {} ],
+    } ];
+  });
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getItems = async () => {
-      const emptyItem = {
-        title: selectedDateString,
-        data: [ {} ],
-      };
-
-      try {
-        const jsonValue = await AsyncStorage.getItem(selectedDateString);
-        selectItems([ jsonValue ? JSON.parse(jsonValue) : emptyItem ]);
-      } catch(e) {
-        console.log('Error getting saved items from CalendarScreen', e);
-        selectItems([ emptyItem ]);
-      }
+      await dispatch(fetchDataForSelectedDate(selectedDateString));
     };
 
     getItems();
-  }, [ selectedDateString ]);
-
-  useEffect(() => {
-    if (dayItem) selectItems([ dayItem ]);
-  }, [ dayItem ]);
+  }, [ dispatch, selectedDateString ]);
 
   const onDayPress = useCallback(({ dateString }: { dateString: string }) => {
     selectDateString(dateString);

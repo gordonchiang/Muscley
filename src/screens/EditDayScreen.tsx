@@ -21,17 +21,10 @@ const EditDayScreen = (props: EditDayScreenProps) => {
         title='Add Exercise'
         onPress={ async () => {
           try {
-            const jsonValue = await AsyncStorage.getItem(dateString);
-            const oldItem = jsonValue ? JSON.parse(jsonValue) : null; 
+            await AsyncStorage.setItem(dateString, JSON.stringify(text));
 
-            const newItem = {
-              title: oldItem?.title || dateString,
-              data: oldItem?.data.concat({ title: text }) || [ { title: text } ],
-            };
-
-            await AsyncStorage.setItem(dateString, JSON.stringify(newItem));
-
-            navigation.navigate('Calendar', { dateString, dayItem: newItem });
+            navigation.goBack();
+            // navigation.navigate('Calendar', { dateString, dayItem: newItem });
           } catch(e) {
             console.log('Error in EditSayScreen', e);
             navigation.goBack();
