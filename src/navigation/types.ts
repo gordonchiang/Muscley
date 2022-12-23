@@ -9,17 +9,17 @@ type CalendarStackParamList = {
   Calendar: {
     dateString: string;
   };
-  EditDay: {
+  EditDate: {
     dateString: string;
   };
 }
 
 type CalendarScreenProps = StackScreenProps<CalendarStackParamList, 'Calendar'>;
-type EditDayScreenProps = StackScreenProps<CalendarStackParamList, 'EditDay'>;
+type EditDateScreenProps = StackScreenProps<CalendarStackParamList, 'EditDate'>;
 
 export {
   RootDrawerParamList,
   CalendarStackParamList,
   CalendarScreenProps,
-  EditDayScreenProps,
+  EditDateScreenProps,
 };

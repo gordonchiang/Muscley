@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
-import type { EditDayScreenProps } from '../navigation/types';
+import type { EditDateScreenProps } from '../navigation/types';
 import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import DigitInput from '../components/DigitInput';
 
-const EditDayScreen = (props: EditDayScreenProps) => {
+const EditDateScreen = (props: EditDateScreenProps) => {
   const { navigation, route: { params: { dateString } } } = props;
 
   const [ text, onChangeText ] = useState('');
@@ -18,7 +18,7 @@ const EditDayScreen = (props: EditDayScreenProps) => {
 
   return (
     <View>
-      <Text>EditDay Screen</Text>
+      <Text>EditDate Screen</Text>
       <DigitInput handleDigitInput={ handleDigitInput } />
       <Button
         title='Add Exercise'
@@ -36,4 +36,4 @@ const EditDayScreen = (props: EditDayScreenProps) => {
   );
 };
 
-export default EditDayScreen;
+export default EditDateScreen;

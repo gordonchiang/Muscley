@@ -19,11 +19,11 @@ const AgendaListItem = (props: AgendaListItemProps) => {
   if (isEmpty(item)) {
     return (
       <View>
-        <Text>Empty day</Text>
+        <Text>Empty date</Text>
         <Button
-          title='Edit Day'
+          title='Edit Date'
           onPress={ () => {
-            navigation.navigate('EditDay', { dateString });
+            navigation.navigate('EditDate', { dateString });
           } }
         />
       </View>
