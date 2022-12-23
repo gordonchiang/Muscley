@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { EditDayScreenProps } from '../navigation/types';
+import { useAppDispatch } from '../redux/hooks';
+import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 
 const EditDayScreen = (props: EditDayScreenProps) => {
   const { navigation, route: { params: { dateString } } } = props;
 
   const [ text, onChangeText ] = useState('');
+
+  const dispatch = useAppDispatch();
 
   return (
     <View>
@@ -21,10 +24,8 @@ const EditDayScreen = (props: EditDayScreenProps) => {
         title='Add Exercise'
         onPress={ async () => {
           try {
-            await AsyncStorage.setItem(dateString, JSON.stringify(text));
-
+            await dispatch(saveDataForSelectedDate({ date: dateString, data: text }));
             navigation.goBack();
-            // navigation.navigate('Calendar', { dateString, dayItem: newItem });
           } catch(e) {
             console.log('Error in EditSayScreen', e);
             navigation.goBack();

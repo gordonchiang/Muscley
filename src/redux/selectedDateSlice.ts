@@ -8,8 +8,8 @@ interface SelectedDateState {
   data?: unknown;
 }
 
-export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
-  'selectedDate/dataStatus',
+const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
+  'selectedDate/dataFetchStatus',
   async (date: string) => {
     let data = null;
 
@@ -24,14 +24,28 @@ export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, stri
   }
 );
 
-const today = new Date();
-const todayDateString = dateToDateString(today);
+const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { date: string; data?: unknown }>(
+  'selectedDate/dataSaveStatus',
+  async (arg) => {
+    const { date, data } = arg;
+
+    if (!data) return { date };
+
+    try {
+      await AsyncStorage.setItem(date, JSON.stringify(data));
+      return { date, data };
+    } catch (e) {
+      console.log(`Error saving selectedDate data for ${date}`, e);
+      return { date };
+    }
+  }
+);
 
 const initialState: SelectedDateState = {
-  date: todayDateString,
+  date: dateToDateString(new Date()),
 };
 
-export const selectedDateSlice = createSlice({
+const selectedDateSlice = createSlice({
   name: 'selectedDate',
   initialState,
   reducers: {
@@ -41,13 +55,22 @@ export const selectedDateSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchDataForSelectedDate.fulfilled, (_, action: PayloadAction<SelectedDateState>) => {
-      const { payload: { date, data } } = action;
-      return { date, data };
-    });
+    builder
+      .addCase(fetchDataForSelectedDate.fulfilled, (_, action: PayloadAction<SelectedDateState>) => {
+        const { payload: { date, data } } = action;
+        return { date, data };
+      })
+      .addCase(saveDataForSelectedDate.fulfilled, (_, action: PayloadAction<SelectedDateState>) => {
+        const { payload: { date, data } } = action;
+        return { date, data };
+      });
   },
 });
 
-export const { selectDate } = selectedDateSlice.actions;
-
 export default selectedDateSlice.reducer;
+export const { selectDate } = selectedDateSlice.actions;
+export {
+  selectedDateSlice,
+  fetchDataForSelectedDate,
+  saveDataForSelectedDate,
+};
