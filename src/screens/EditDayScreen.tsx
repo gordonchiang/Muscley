@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import type { EditDayScreenProps } from '../navigation/types';
 import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
+import DigitInput from '../components/DigitInput';
 
 const EditDayScreen = (props: EditDayScreenProps) => {
   const { navigation, route: { params: { dateString } } } = props;
@@ -11,15 +12,14 @@ const EditDayScreen = (props: EditDayScreenProps) => {
 
   const dispatch = useAppDispatch();
 
+  const handleDigitInput = (input: string) => {
+    onChangeText(input);
+  };
+
   return (
     <View>
       <Text>EditDay Screen</Text>
-      <TextInput
-        style={ { borderWidth: 1 } }
-        value={ text }
-        onChangeText={ onChangeText }
-      />
-      <Text></Text>
+      <DigitInput handleDigitInput={ handleDigitInput } />
       <Button
         title='Add Exercise'
         onPress={ async () => {
