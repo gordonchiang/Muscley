@@ -2,32 +2,39 @@ import { StyleSheet, Text, View } from 'react-native';
 import DigitInput from './DigitInput';
 
 type SetDigit = {
+  index?: number;
   weight?: string;
   reps?: string;
 };
 
 interface SetDigitInputProps {
+  index?: number;
   handleSetDigitInput(input: SetDigit): void;
   weightPlaceholder?: string;
   repsPlaceholder?: string;
 }
 
 const SetDigitInput = (props: SetDigitInputProps) => {
-  const { handleSetDigitInput, weightPlaceholder, repsPlaceholder } = props;
+  const {
+    index,
+    handleSetDigitInput,
+    weightPlaceholder,
+    repsPlaceholder,
+  } = props;
 
   return (
     <View style={ styles.container }>
       <Text>Weight: </Text>
       <DigitInput
         handleDigitInput={ (weight) => {
-          handleSetDigitInput({ weight });
+          handleSetDigitInput({ index, weight });
         } }
         placeholder={ weightPlaceholder }
       />
       <Text> Rep: </Text>
       <DigitInput
         handleDigitInput={ (reps) => {
-          handleSetDigitInput({ reps });
+          handleSetDigitInput({ index, reps });
         } }
         placeholder={ repsPlaceholder }
       />
