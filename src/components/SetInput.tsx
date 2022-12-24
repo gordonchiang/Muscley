@@ -4,7 +4,7 @@ import SetDigitInput, { SetDigit } from './SetDigitInput';
 
 interface SetInputProps {
   index: number;
-  handleSetsInput(input: SetDigit): void;
+  handleSetsInput: (arg0: SetDigit) => void;
 }
 
 const SetInput = (props: SetInputProps) => {

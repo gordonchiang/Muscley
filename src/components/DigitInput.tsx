@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 interface DigitInputProps {
-  handleDigitInput(input: string): void;
+  handleDigitInput: (arg0: string) => void;
   placeholder?: string;
   initialValue?: string;
 }

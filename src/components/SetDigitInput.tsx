@@ -9,7 +9,7 @@ type SetDigit = {
 
 interface SetDigitInputProps {
   index?: number;
-  handleSetDigitInput(input: SetDigit): void;
+  handleSetDigitInput: (arg0: SetDigit) => void;
   weightPlaceholder?: string;
   repsPlaceholder?: string;
 }
