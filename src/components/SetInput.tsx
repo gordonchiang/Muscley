@@ -1,14 +1,15 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import SetDigitInput, { SetDigit } from './SetDigitInput';
 
 interface SetInputProps {
   index: number;
   handleSetsInput: (arg0: SetDigit) => void;
+  handleExerciseNameInput: (arg0: string) => void;
 }
 
 const SetInput = (props: SetInputProps) => {
-  const { index, handleSetsInput } = props;
+  const { index, handleSetsInput, handleExerciseNameInput } = props;
 
   const [ displaySets, changeDisplaySets ] = useState<ReactElement[]>([]);
 
@@ -24,6 +25,10 @@ const SetInput = (props: SetInputProps) => {
 
   return (
     <View>
+      <TextInput
+        onChangeText={ handleExerciseNameInput }
+        style={ { borderWidth: 1 } }
+      />
       {
         displaySets
       }

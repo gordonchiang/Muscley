@@ -10,6 +10,7 @@ const EditDateScreen = (props: EditDateScreenProps) => {
   const { navigation, route: { params: { dateString } } } = props;
 
   const [ sets, changeSets ] = useState<SetDigit[]>([ {} ]);
+  const [ exerciseName, setExerciseName ] = useState('');
 
   const dispatch = useAppDispatch();
 
@@ -25,10 +26,14 @@ const EditDateScreen = (props: EditDateScreenProps) => {
     }));
   }, []);
 
+  const handleExerciseNameInput = (name: string) => {
+    setExerciseName(name);
+  };
+
   return (
     <View>
       <Text>EditDate Screen</Text>
-      <SetInput index={ sets.length-1 } handleSetsInput={ handleSetsInput } />
+      <SetInput index={ sets.length-1 } handleSetsInput={ handleSetsInput } handleExerciseNameInput={ handleExerciseNameInput } />
       <Button
         title='Add Another Set'
         onPress={ () => {
@@ -42,7 +47,7 @@ const EditDateScreen = (props: EditDateScreenProps) => {
             const filledSets = sets.filter(set => set.weight || set.reps);
             if (filledSets.length > 0) await dispatch(saveDataForSelectedDate({
               date: dateString,
-              data: filledSets,
+              data: { title: exerciseName, sets: filledSets },
             }));
           } catch(e) {
             console.log('Error in EditDateScreen', e);
