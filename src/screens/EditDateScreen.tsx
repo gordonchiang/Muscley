@@ -3,31 +3,35 @@ import { Button, Text, View } from 'react-native';
 import type { EditDateScreenProps } from '../navigation/types';
 import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
-import DigitInput from '../components/DigitInput';
+import SetDigitInput, { SetDigit } from '../components/SetDigitInput';
 
 const EditDateScreen = (props: EditDateScreenProps) => {
   const { navigation, route: { params: { dateString } } } = props;
 
-  const [ text, onChangeText ] = useState('');
+  const [ set, changeSet ] = useState<SetDigit>({});
 
   const dispatch = useAppDispatch();
 
-  const handleDigitInput = (input: string) => {
-    onChangeText(input);
+  const handleSetDigitInput = ({ weight, reps }: SetDigit) => {
+    changeSet({
+      ...set,
+      ...(weight && { weight }),
+      ...(reps && { reps }),
+    });
   };
 
   return (
     <View>
       <Text>EditDate Screen</Text>
-      <DigitInput handleDigitInput={ handleDigitInput } />
+      <SetDigitInput handleSetDigitInput={ handleSetDigitInput } />
       <Button
         title='Add Exercise'
         onPress={ async () => {
           try {
-            await dispatch(saveDataForSelectedDate({ date: dateString, data: text }));
+            await dispatch(saveDataForSelectedDate({ date: dateString, data: set }));
             navigation.goBack();
           } catch(e) {
-            console.log('Error in EditSayScreen', e);
+            console.log('Error in EditDateScreen', e);
             navigation.goBack();
           }
         } }

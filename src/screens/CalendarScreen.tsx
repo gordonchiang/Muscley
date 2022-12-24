@@ -22,7 +22,7 @@ const CalendarScreen = (props: CalendarScreenProps) => {
 
     return [ {
       title: date,
-      data: [ data ? { title: data } : {} ],
+      data: [ data ? { title: JSON.stringify(data) } : {} ],
     } ];
   });
   const dispatch = useAppDispatch();
