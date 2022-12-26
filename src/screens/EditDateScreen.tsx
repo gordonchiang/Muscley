@@ -3,8 +3,8 @@ import { Button, Text, View } from 'react-native';
 import type { EditDateScreenProps } from '../navigation/types';
 import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
-import { SetInput } from '../components/SetInput';
-import type { IndexedSet } from '../components/SetDigitInput';
+import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
+import type { IndexedSet } from '../components/SetInput';
 
 export const EditDateScreen = (props: EditDateScreenProps) => {
   const { navigation, route: { params: { dateString } } } = props;
@@ -33,7 +33,7 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
   return (
     <View>
       <Text>EditDate Screen</Text>
-      <SetInput index={ sets.length-1 } handleSetsInput={ handleSetsInput } handleExerciseNameInput={ handleExerciseNameInput } />
+      <ExerciseSetsInput index={ sets.length-1 } handleSetsInput={ handleSetsInput } handleExerciseNameInput={ handleExerciseNameInput } />
       <Button
         title='Add Another Set'
         onPress={ () => {

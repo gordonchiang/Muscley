@@ -1,37 +1,44 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { TextInput, View } from 'react-native';
-import { IndexedSet, SetDigitInput } from './SetDigitInput';
+import { StyleSheet, Text, View } from 'react-native';
+import { DigitInput } from './DigitInput';
+
+type Set = {
+  weight?: string;
+  reps?: string;
+};
+
+export type IndexedSet = Set & {
+  index?: number;
+};
 
 interface SetInputProps {
-  index: number;
-  handleSetsInput: (arg0: IndexedSet) => void;
-  handleExerciseNameInput: (arg0: string) => void;
+  handleSetInput: (arg0: Set | IndexedSet) => void;
+  index?: number;
+  weightPlaceholder?: string;
+  repsPlaceholder?: string;
 }
 
 export const SetInput = (props: SetInputProps) => {
-  const { index, handleSetsInput, handleExerciseNameInput } = props;
-
-  const [ displaySets, changeDisplaySets ] = useState<ReactElement[]>([]);
-
-  useEffect(() => {
-    changeDisplaySets(displaySets => displaySets.concat(
-      <SetDigitInput
-        key={ index }
-        index={ index }
-        handleSetInput={ handleSetsInput }
-      />
-    ));
-  }, [ index, handleSetsInput ]);
+  const { handleSetInput, index, weightPlaceholder, repsPlaceholder } = props;
 
   return (
-    <View>
-      <TextInput
-        onChangeText={ handleExerciseNameInput }
-        style={ { borderWidth: 1 } }
+    <View style={ styles.container }>
+      <Text>Weight: </Text>
+      <DigitInput
+        handleDigitInput={ weight => handleSetInput({ index, weight }) }
+        placeholder={ weightPlaceholder }
       />
-      {
-        displaySets
-      }
+      <Text> Rep: </Text>
+      <DigitInput
+        handleDigitInput={ reps => handleSetInput({ index, reps }) }
+        placeholder={ repsPlaceholder }
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+});
