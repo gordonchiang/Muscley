@@ -1,14 +1,14 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { TextInput, View } from 'react-native';
-import SetDigitInput, { SetDigit } from './SetDigitInput';
+import { IndexedSet, SetDigitInput } from './SetDigitInput';
 
 interface SetInputProps {
   index: number;
-  handleSetsInput: (arg0: SetDigit) => void;
+  handleSetsInput: (arg0: IndexedSet) => void;
   handleExerciseNameInput: (arg0: string) => void;
 }
 
-const SetInput = (props: SetInputProps) => {
+export const SetInput = (props: SetInputProps) => {
   const { index, handleSetsInput, handleExerciseNameInput } = props;
 
   const [ displaySets, changeDisplaySets ] = useState<ReactElement[]>([]);
@@ -18,7 +18,7 @@ const SetInput = (props: SetInputProps) => {
       <SetDigitInput
         key={ index }
         index={ index }
-        handleSetDigitInput={ handleSetsInput }
+        handleSetInput={ handleSetsInput }
       />
     ));
   }, [ index, handleSetsInput ]);
@@ -35,5 +35,3 @@ const SetInput = (props: SetInputProps) => {
     </View>
   );
 };
-
-export default SetInput;

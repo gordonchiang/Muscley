@@ -1,12 +1,12 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import type { CalendarStackParamList } from './types';
-import CalendarScreen from '../screens/CalendarScreen';
-import EditDateScreen from '../screens/EditDateScreen';
+import { CalendarScreen } from '../screens/CalendarScreen';
+import { EditDateScreen } from '../screens/EditDateScreen';
 import { dateToDateString } from '../utils/dateFunctions';
 
 const Stack = createStackNavigator<CalendarStackParamList>();
 
-const CalendarStack = () => {
+export const CalendarStack = () => {
   const today = new Date();
   const todayDateString = dateToDateString(today);
 
@@ -25,5 +25,3 @@ const CalendarStack = () => {
     </Stack.Navigator>
   );
 };
-
-export default CalendarStack;

@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import selectedDateReducer from './selectedDateSlice';
+import selectedDateSliceReducer from './selectedDateSlice';
 
 export const store = configureStore({
   reducer: {
-    selectedDate: selectedDateReducer,
+    selectedDate: selectedDateSliceReducer,
   },
 });
 

@@ -1,7 +1,7 @@
 import { Button, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SettingsScreen = () => {
+export const SettingsScreen = () => {
   const deleteData = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
@@ -24,5 +24,3 @@ const SettingsScreen = () => {
     </View>
   );
 };
-
-export default SettingsScreen;

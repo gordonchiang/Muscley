@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import type { RootState } from './store';
 import { dateToDateString } from '../utils/dateFunctions';
 
 interface SelectedDateState {
@@ -8,7 +7,7 @@ interface SelectedDateState {
   data?: unknown;
 }
 
-const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
+export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
   'selectedDate/dataFetchStatus',
   async (date: string) => {
     let data = null;
@@ -24,7 +23,7 @@ const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
   }
 );
 
-const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { date: string; data?: unknown }>(
+export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { date: string; data?: unknown }>(
   'selectedDate/dataSaveStatus',
   async (arg) => {
     const { date, data } = arg;
@@ -45,7 +44,7 @@ const initialState: SelectedDateState = {
   date: dateToDateString(new Date()),
 };
 
-const selectedDateSlice = createSlice({
+export const selectedDateSlice = createSlice({
   name: 'selectedDate',
   initialState,
   reducers: {
@@ -67,10 +66,6 @@ const selectedDateSlice = createSlice({
   },
 });
 
-export default selectedDateSlice.reducer;
 export const { selectDate } = selectedDateSlice.actions;
-export {
-  selectedDateSlice,
-  fetchDataForSelectedDate,
-  saveDataForSelectedDate,
-};
+
+export default selectedDateSlice.reducer;

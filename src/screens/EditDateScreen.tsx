@@ -3,18 +3,18 @@ import { Button, Text, View } from 'react-native';
 import type { EditDateScreenProps } from '../navigation/types';
 import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
-import SetInput from '../components/SetInput';
-import type { SetDigit } from '../components/SetDigitInput';
+import { SetInput } from '../components/SetInput';
+import type { IndexedSet } from '../components/SetDigitInput';
 
-const EditDateScreen = (props: EditDateScreenProps) => {
+export const EditDateScreen = (props: EditDateScreenProps) => {
   const { navigation, route: { params: { dateString } } } = props;
 
-  const [ sets, changeSets ] = useState<SetDigit[]>([ {} ]);
+  const [ sets, changeSets ] = useState<IndexedSet[]>([ {} ]);
   const [ exerciseName, setExerciseName ] = useState('');
 
   const dispatch = useAppDispatch();
 
-  const handleSetsInput = useCallback(({ index, weight, reps }: SetDigit) => {
+  const handleSetsInput = useCallback(({ index, weight, reps }: IndexedSet) => {
     changeSets(sets => sets.map((set, i) => {
       return i !== index
         ? set
@@ -58,5 +58,3 @@ const EditDateScreen = (props: EditDateScreenProps) => {
     </View>
   );
 };
-
-export default EditDateScreen;

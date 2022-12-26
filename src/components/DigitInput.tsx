@@ -3,39 +3,36 @@ import { StyleSheet, TextInput, View } from 'react-native';
 
 interface DigitInputProps {
   handleDigitInput: (arg0: string) => void;
-  placeholder?: string;
   initialValue?: string;
+  placeholder?: string;
 }
 
-const DigitInput = (props: DigitInputProps) => {
-  const { handleDigitInput, placeholder, initialValue = '' } = props;
+export const DigitInput = (props: DigitInputProps) => {
+  const { handleDigitInput, initialValue = '', placeholder } = props;
 
-  const [ digitsString, changeDigits ] = useState(initialValue);
-
-  const onChangeText = (text: string) => {
-    const cleanedDigitsString = text.replace(/[^0-9]/g, '');
-    changeDigits(cleanedDigitsString);
-    handleDigitInput(cleanedDigitsString);
-  };
+  const [ digitString, setDigitString ] = useState(initialValue);
 
   return (
     <View style={ styles.container }>
       <View style={ styles.inputContainer } pointerEvents='none'>
         <TextInput
-          placeholder={ placeholder }
           style={ styles.inputDisplay }
+          value={ digitString }
+          placeholder={ placeholder }
           textAlign='right'
-          value={ digitsString }
         />
       </View>
       <View style={ styles.inputContainer }>
         <TextInput
+          onChangeText={ input => {
+            const cleanedDigitString = input.replace(/[^0-9]/g, '');
+            setDigitString(cleanedDigitString);
+            handleDigitInput(cleanedDigitString);
+          } }
+          style={ [ styles.inputDisplay, styles.hidden ] }
+          value={ digitString }
           keyboardType='numeric'
-          maxLength={ 4 }
-          onChangeText={ onChangeText }
-          style={ styles.inputDisplayHidden }
           textAlign='right'
-          value={ digitsString }
         />
       </View>
     </View>
@@ -61,18 +58,9 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    paddingRight: 5,
+    paddingHorizontal: 5,
   },
-  inputDisplayHidden: {
-    borderWidth: 1,
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    paddingRight: 5,
+  hidden: {
     color: 'transparent',
   },
 });
-
-export default DigitInput;

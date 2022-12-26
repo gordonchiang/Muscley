@@ -1,41 +1,35 @@
 import { StyleSheet, Text, View } from 'react-native';
-import DigitInput from './DigitInput';
+import { DigitInput } from './DigitInput';
 
-type SetDigit = {
-  index?: number;
+type Set = {
   weight?: string;
   reps?: string;
 };
 
-interface SetDigitInputProps {
+export type IndexedSet = Set & {
   index?: number;
-  handleSetDigitInput: (arg0: SetDigit) => void;
+};
+
+interface SetDigitInputProps {
+  handleSetInput: (arg0: Set | IndexedSet) => void;
+  index?: number;
   weightPlaceholder?: string;
   repsPlaceholder?: string;
 }
 
-const SetDigitInput = (props: SetDigitInputProps) => {
-  const {
-    index,
-    handleSetDigitInput,
-    weightPlaceholder,
-    repsPlaceholder,
-  } = props;
+export const SetDigitInput = (props: SetDigitInputProps) => {
+  const { handleSetInput, index, weightPlaceholder, repsPlaceholder } = props;
 
   return (
     <View style={ styles.container }>
       <Text>Weight: </Text>
       <DigitInput
-        handleDigitInput={ (weight) => {
-          handleSetDigitInput({ index, weight });
-        } }
+        handleDigitInput={ weight => handleSetInput({ index, weight }) }
         placeholder={ weightPlaceholder }
       />
       <Text> Rep: </Text>
       <DigitInput
-        handleDigitInput={ (reps) => {
-          handleSetDigitInput({ index, reps });
-        } }
+        handleDigitInput={ reps => handleSetInput({ index, reps }) }
         placeholder={ repsPlaceholder }
       />
     </View>
@@ -44,10 +38,7 @@ const SetDigitInput = (props: SetDigitInputProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
   },
 });
-
-export default SetDigitInput;
-export { SetDigit };

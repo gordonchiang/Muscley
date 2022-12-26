@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 import type { CalendarScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import AgendaListItem from '../components/AgendaListItem';
+import { AgendaListItem } from '../components/AgendaListItem';
 import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
 
 const SELECTED_DATE_MARKING_PROPS = {
@@ -12,7 +12,7 @@ const SELECTED_DATE_MARKING_PROPS = {
   selectedTextColor: '#FFFFFF',
 };
 
-const CalendarScreen = (props: CalendarScreenProps) => {
+export const CalendarScreen = (props: CalendarScreenProps) => {
   const { dateString: initialDateString } = props.route.params;
 
   const [ selectedDateString, selectDateString ] = useState(initialDateString);
@@ -76,5 +76,3 @@ const CalendarScreen = (props: CalendarScreenProps) => {
     </View>
   );
 };
-
-export default CalendarScreen;

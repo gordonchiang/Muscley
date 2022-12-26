@@ -11,31 +11,31 @@ interface AgendaListItemProps {
 
 const isEmpty = (obj: any) => [ Object, Array ].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 
-const AgendaListItem = (props: AgendaListItemProps) => {
-  const { item, dateString } = props;
+export const AgendaListItem = memo(
+  function AgendaListItem(props: AgendaListItemProps) {
+    const { item, dateString } = props;
 
-  const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
+    const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
 
-  if (isEmpty(item)) {
+    if (isEmpty(item)) {
+      return (
+        <View>
+          <Text>Empty date</Text>
+          <Button
+            title='Edit Date'
+            onPress={ () => {
+              navigation.navigate('EditDate', { dateString });
+            } }
+          />
+        </View>
+      );
+    }
+
     return (
       <View>
-        <Text>Empty date</Text>
-        <Button
-          title='Edit Date'
-          onPress={ () => {
-            navigation.navigate('EditDate', { dateString });
-          } }
-        />
+        <Text>Placeholder for not empty item</Text>
+        <Text>{ item.title }</Text>
       </View>
     );
   }
-
-  return (
-    <View>
-      <Text>Placeholder for not empty item</Text>
-      <Text>{ item.title }</Text>
-    </View>
-  );
-};
-
-export default memo(AgendaListItem);
+);
