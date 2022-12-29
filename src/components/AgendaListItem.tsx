@@ -3,10 +3,14 @@ import { Button, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { CalendarStackParamList } from '../navigation/types';
-import { ExerciseItem } from '../screens/types';
+import type { ExerciseItem } from '../screens/types';
+
+const isEmptyItem = (item: ExerciseItem | Record<string, never>): item is Record<string, never> => {
+  return Object.keys(item).length === 0;
+};
 
 interface AgendaListItemProps {
-  item: ExerciseItem;
+  item: ExerciseItem | Record<string, never>;
   dateString: string;
 }
 
@@ -19,14 +23,17 @@ export const AgendaListItem = memo(
     return (
       <View>
         {
-          item.title
-            ? <Text>{ item.title as string }</Text>
-            : null
+          !isEmptyItem(item)
+            ? (
+              <View>
+                <Text>{ item.title ? item.title : 'Untitled' }</Text>
+                <Button
+                  title='View Exercise'
+                  onPress={ () => navigation.navigate('ViewExercise', { exerciseItem: item }) }
+                />
+              </View>
+            ) : null
         }
-        <Button
-          title='View Exercise'
-          onPress={ () => navigation.navigate('ViewExercise', { exerciseItem: item }) }
-        />
         <Button
           title='Edit Date'
           onPress={ () => navigation.navigate('EditDate', { dateString }) }

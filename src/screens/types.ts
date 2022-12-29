@@ -1,1 +1,5 @@
-export type ExerciseItem = Record<string, unknown>;
+export type ExerciseItem = {
+  date: string;
+  title?: string;
+  data: unknown;
+};

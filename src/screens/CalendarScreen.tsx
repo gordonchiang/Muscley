@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
 import { AgendaListItem } from '../components/AgendaListItem';
 import { ExerciseItem } from './types';
+import { AgendaListItems, selectedDateStateToAgendaListItem } from '../api/calendar';
 
 const SELECTED_DATE_MARKING_PROPS = {
   selected: true,
@@ -18,14 +19,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
 
   const [ selectedDateString, selectDateString ] = useState(initialDateString);
   const [ markedDates, changeMarkedDates ] = useState({ [initialDateString]: SELECTED_DATE_MARKING_PROPS });
-  const items = useAppSelector((state) => {
-    const { date, data } = state.selectedDate;
-
-    return [ {
-      title: date,
-      data: [ data ? { title: JSON.stringify(data) } : {} ],
-    } ];
-  });
+  const items: AgendaListItems = useAppSelector(({ selectedDate }) => selectedDateStateToAgendaListItem(selectedDate));
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -48,7 +42,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
     changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });    
   }, []);
 
-  const renderItem = useCallback((itemInfo: SectionListRenderItemInfo<ExerciseItem>) => {
+  const renderItem = useCallback((itemInfo: SectionListRenderItemInfo<ExerciseItem | Record<string, never>>) => {
     const { item, section: { title: dateString } } = itemInfo;
 
     // AgendaList currently forces the section type to be DefaultSectionT
