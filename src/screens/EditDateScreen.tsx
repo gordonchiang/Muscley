@@ -32,8 +32,12 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
 
   return (
     <View>
-      <Text>EditDate Screen</Text>
-      <ExerciseSetsInput index={ sets.length-1 } handleSetsInput={ handleSetsInput } handleExerciseNameInput={ handleExerciseNameInput } />
+      <Text>Edit Date Screen</Text>
+      <ExerciseSetsInput
+        index={ sets.length-1 }
+        handleSetsInput={ handleSetsInput }
+        handleExerciseNameInput={ handleExerciseNameInput }
+      />
       <Button
         title='Add Another Set'
         onPress={ () => {

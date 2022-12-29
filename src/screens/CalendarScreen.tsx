@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { SectionListRenderItemInfo, View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 import type { CalendarScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { AgendaListItem } from '../components/AgendaListItem';
 import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
+import { AgendaListItem } from '../components/AgendaListItem';
+import { ExerciseItem } from './types';
 
 const SELECTED_DATE_MARKING_PROPS = {
   selected: true,
@@ -47,8 +48,12 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
     changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });    
   }, []);
 
-  const renderItem = useCallback((props: any) => {
-    const { item, section: { title: dateString } } = props;
+  const renderItem = useCallback((itemInfo: SectionListRenderItemInfo<ExerciseItem>) => {
+    const { item, section: { title: dateString } } = itemInfo;
+
+    // AgendaList currently forces the section type to be DefaultSectionT
+    if (typeof dateString !== 'string') throw new TypeError('`title` passed to `section` in `renderItem` of `AgendaList` is not of type `string`');
+
     return <AgendaListItem item={ item } dateString={ dateString } />;
   }, []);
 
@@ -63,7 +68,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
           onDayPress={ onDayPress }
           theme={ {
             // Disable automatic selected date marking to avoid issue https://github.com/wix/react-native-calendars/issues/1537
-            selectedDayBackgroundColor: '#ffffff',
+            selectedDayBackgroundColor: '#FFFFFF',
             selectedDayTextColor: '#000000',
           } }
           markedDates={ markedDates }

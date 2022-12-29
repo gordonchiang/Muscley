@@ -3,13 +3,12 @@ import { Button, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { CalendarStackParamList } from '../navigation/types';
+import { ExerciseItem } from '../screens/types';
 
 interface AgendaListItemProps {
-  item: any;
+  item: ExerciseItem;
   dateString: string;
 }
-
-const isEmpty = (obj: any) => [ Object, Array ].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 
 export const AgendaListItem = memo(
   function AgendaListItem(props: AgendaListItemProps) {
@@ -17,24 +16,21 @@ export const AgendaListItem = memo(
 
     const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
 
-    if (isEmpty(item)) {
-      return (
-        <View>
-          <Text>Empty date</Text>
-          <Button
-            title='Edit Date'
-            onPress={ () => {
-              navigation.navigate('EditDate', { dateString });
-            } }
-          />
-        </View>
-      );
-    }
-
     return (
       <View>
-        <Text>Placeholder for not empty item</Text>
-        <Text>{ item.title }</Text>
+        {
+          item.title
+            ? <Text>{ item.title as string }</Text>
+            : null
+        }
+        <Button
+          title='View Exercise'
+          onPress={ () => navigation.navigate('ViewExercise', { exerciseItem: item }) }
+        />
+        <Button
+          title='Edit Date'
+          onPress={ () => navigation.navigate('EditDate', { dateString }) }
+        />
       </View>
     );
   }
