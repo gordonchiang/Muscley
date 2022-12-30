@@ -9,12 +9,8 @@ export type AgendaListItems = [ {
 export const selectedDateStateToAgendaListItem = (item: SelectedDateState): AgendaListItems => {
   const { date, data } = item;
 
-  if (!data) return [ { title: date, data: [ {} ] } ];
-
-  const exerciseItem = data as ExerciseItem;
-
   return [ {
     title: date,
-    data: [ { title: exerciseItem.title, date, data: exerciseItem } ],
+    data: data ? [ data as ExerciseItem ] : [ {} ],
   } ];
 };

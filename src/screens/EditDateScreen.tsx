@@ -5,6 +5,7 @@ import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
 import type { IndexedSet } from '../components/SetInput';
+import { ExerciseItem } from './types';
 
 export const EditDateScreen = (props: EditDateScreenProps) => {
   const { navigation, route: { params: { dateString } } } = props;
@@ -49,10 +50,15 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
         onPress={ async () => {
           try {
             const filledSets = sets.filter(set => set.weight || set.reps);
-            if (filledSets.length > 0) await dispatch(saveDataForSelectedDate({
-              date: dateString,
-              data: { title: exerciseName, sets: filledSets },
-            }));
+            if (filledSets.length > 0) {
+              const data: ExerciseItem = {
+                date: dateString,
+                title: exerciseName,
+                data: { sets: filledSets },
+              };
+              
+              await dispatch(saveDataForSelectedDate({ date: dateString, data }));
+            }
           } catch(e) {
             // eslint-disable-next-line no-console
             console.log('Error in EditDateScreen', e);
