@@ -1,25 +1,16 @@
-/* eslint-disable no-console */
 import { Button, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { clear, getAllKeys } from '../api/localStorage';
 
 export const SettingsScreen = () => {
-  const deleteData = async () => {
-    try {
-      const keys = await AsyncStorage.getAllKeys();
-      console.log('removed: ', keys);
-
-      await AsyncStorage.clear();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <View>
       <Button
         title='Delete all data'
         onPress={ async () => {
-          await deleteData();
+          const keys = await getAllKeys();
+          await clear();
+          // eslint-disable-next-line no-console
+          console.log('Removed: ', keys);
         } }
       />
     </View>
