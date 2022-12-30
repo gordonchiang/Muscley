@@ -54,6 +54,7 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
               data: { title: exerciseName, sets: filledSets },
             }));
           } catch(e) {
+            // eslint-disable-next-line no-console
             console.log('Error in EditDateScreen', e);
           }
           navigation.goBack();

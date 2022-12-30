@@ -16,6 +16,7 @@ export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, stri
       const serializedData = await AsyncStorage.getItem(date);
       if (serializedData) data = JSON.parse(serializedData);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(`Error fetching selectedDate data for ${date}`, e);
     }
 
@@ -34,6 +35,7 @@ export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { dat
       await AsyncStorage.setItem(date, JSON.stringify(data));
       return { date, data };
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(`Error saving selectedDate data for ${date}`, e);
       return { date };
     }

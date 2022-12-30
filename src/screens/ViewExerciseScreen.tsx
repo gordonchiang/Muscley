@@ -1,18 +1,19 @@
-import { Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import type { ViewExerciseScreenProps } from '../navigation/types';
 
-const isEmpty = (obj: any) => [ Object, Array ].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
-
 export const ViewExerciseScreen = (props: ViewExerciseScreenProps) => {
-  const { exerciseItem } = props.route.params;
+  const { navigation, route: { params: { exerciseItem } } } = props;
+  const { title, date, data } = exerciseItem;
 
   return (
     <View>
-      {
-        isEmpty(exerciseItem)
-          ? <Text>Empty date</Text>
-          : <Text>Placeholder for not empty item { '\n' }{ exerciseItem.title as string }</Text>
-      }
+      <Text>{ `Title: ${title || 'Untitled'}` }</Text>
+      <Text>{ `Date: ${date}` }</Text>
+      <Text>{ `Sets: ${JSON.stringify(data)}` }</Text>
+      <Button
+        title='Go Back'
+        onPress={ () => navigation.goBack() }
+      />
     </View>
   );
 };

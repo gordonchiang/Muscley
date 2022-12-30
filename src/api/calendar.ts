@@ -7,10 +7,14 @@ export type AgendaListItems = [ {
 } ];
 
 export const selectedDateStateToAgendaListItem = (item: SelectedDateState): AgendaListItems => {
-  const { date: title, data } = item;
+  const { date, data } = item;
+
+  if (!data) return [ { title: date, data: [ {} ] } ];
+
+  const exerciseItem = data as ExerciseItem;
 
   return [ {
-    title,
-    data: data ? [ { title: JSON.stringify(data), date: title, data } ] : [ {} ],
+    title: date,
+    data: [ { title: exerciseItem.title, date, data: exerciseItem } ],
   } ];
 };
