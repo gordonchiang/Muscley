@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { dateToDateString } from '../utils/dateFunctions';
+import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 
 export interface SelectedDateState {
   date: string;
@@ -10,17 +10,7 @@ export interface SelectedDateState {
 export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
   'selectedDate/dataFetchStatus',
   async (date: string) => {
-    let data = null;
-
-    try {
-      const serializedData = await AsyncStorage.getItem(date);
-      if (serializedData) data = JSON.parse(serializedData);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(`Error fetching selectedDate data for ${date}`, e);
-    }
-
-    return { date, data };
+    return { date, data: await getFromLocalStorage(date) };
   }
 );
 
@@ -32,11 +22,9 @@ export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { dat
     if (!data) return { date };
 
     try {
-      await AsyncStorage.setItem(date, JSON.stringify(data));
+      await saveToLocalStorage(date, data);
       return { date, data };
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(`Error saving selectedDate data for ${date}`, e);
       return { date };
     }
   }

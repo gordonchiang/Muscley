@@ -1,5 +1,5 @@
 import { Button, View } from 'react-native';
-import { clear, getAllKeys } from '../api/localStorage';
+import { clearLocalStorage, getAllKeysFromLocalStorage } from '../api/localStorage';
 
 export const SettingsScreen = () => {
   return (
@@ -7,8 +7,8 @@ export const SettingsScreen = () => {
       <Button
         title='Delete all data'
         onPress={ async () => {
-          const keys = await getAllKeys();
-          await clear();
+          const keys = await getAllKeysFromLocalStorage();
+          await clearLocalStorage();
           // eslint-disable-next-line no-console
           console.log('Removed: ', keys);
         } }
