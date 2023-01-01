@@ -7,10 +7,12 @@ export interface SelectedDateState {
   data?: unknown;
 }
 
+const addSelectedDatePrefix = (date: string): string => `selectedDate_${date}`;
+
 export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
   'selectedDate/dataFetchStatus',
   async (date: string) => {
-    return { date, data: await getFromLocalStorage(date) };
+    return { date, data: await getFromLocalStorage(addSelectedDatePrefix(date)) };
   }
 );
 
@@ -22,7 +24,7 @@ export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { dat
     if (!data) return { date };
 
     try {
-      await saveToLocalStorage(date, data);
+      await saveToLocalStorage(addSelectedDatePrefix(date), data);
       return { date, data };
     } catch (e) {
       return { date };
