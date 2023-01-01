@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Alert, Button, Text, View } from 'react-native';
 import type { EditDateScreenProps } from '../navigation/types';
 import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
@@ -48,21 +48,29 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
       <Button
         title='Add Exercise'
         onPress={ async () => {
+          if (exerciseName === '') {
+            Alert.alert('Error', 'Please input an exercise name');
+            return;
+          }
+
+          if (!sets.every(set => set.weight && set.reps)) {
+            Alert.alert('Error', 'Please complete all sets');
+            return;
+          }
+
+          const data: ExerciseItem = {
+            date: dateString,
+            title: exerciseName,
+            data: { sets },
+          };
+
           try {
-            const filledSets = sets.filter(set => set.weight || set.reps);
-            if (filledSets.length > 0) {
-              const data: ExerciseItem = {
-                date: dateString,
-                title: exerciseName,
-                data: { sets: filledSets },
-              };
-              
-              await dispatch(saveDataForSelectedDate({ date: dateString, data }));
-            }
+            await dispatch(saveDataForSelectedDate({ date: dateString, data }));
           } catch(e) {
             // eslint-disable-next-line no-console
             console.log('Error in EditDateScreen', e);
           }
+
           navigation.goBack();
         } }
       />
