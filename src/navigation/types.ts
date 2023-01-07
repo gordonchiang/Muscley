@@ -8,7 +8,7 @@ export type RootDrawerParamList = {
 
 export type CalendarStackParamList = {
   Calendar: { dateString: string };
-  EditDate: { dateString: string };
+  EditDate: { dateString: string, exerciseItem?: ExerciseItem };
   ViewExercise: { exerciseItem: ExerciseItem };
 }
 

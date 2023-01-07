@@ -3,31 +3,39 @@ import { TextInput, View } from 'react-native';
 import { IndexedSet, SetInput } from './SetInput';
 
 interface ExerciseSetsProps {
-  index: number;
+  sets: IndexedSet[];
   handleSetsInput: (arg0: IndexedSet) => void;
+  exerciseName: string;
   handleExerciseNameInput: (arg0: string) => void;
 }
 
 export const ExerciseSetsInput = (props: ExerciseSetsProps) => {
-  const { index, handleSetsInput, handleExerciseNameInput } = props;
+  const { sets, handleSetsInput, exerciseName, handleExerciseNameInput } = props;
 
   const [ displaySets, changeDisplaySets ] = useState<ReactElement[]>([]);
 
   useEffect(() => {
-    changeDisplaySets(displaySets => displaySets.concat(
-      <SetInput
-        key={ index }
-        index={ index }
-        handleSetInput={ handleSetsInput }
-      />
-    ));
-  }, [ index, handleSetsInput ]);
+    const newDisplaySets: ReactElement[] = sets.map((set, index) => {
+      return (
+        <SetInput
+          key={ index }
+          index={ index }
+          handleSetInput={ handleSetsInput }
+          weightPlaceholder={ set.weight }
+          repsPlaceholder={ set.reps }
+        />
+      );
+    }); 
+
+    changeDisplaySets(newDisplaySets);
+  }, [ sets, handleSetsInput ]);
 
   return (
     <View>
       <TextInput
         onChangeText={ handleExerciseNameInput }
         style={ { borderWidth: 1 } }
+        value={ exerciseName }
       />
       { displaySets }
     </View>

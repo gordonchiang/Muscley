@@ -8,10 +8,13 @@ import type { IndexedSet } from '../components/SetInput';
 import { ExerciseItem } from './types';
 
 export const EditDateScreen = (props: EditDateScreenProps) => {
-  const { navigation, route: { params: { dateString } } } = props;
+  const { navigation, route: { params: { dateString, exerciseItem } } } = props;
 
-  const [ sets, changeSets ] = useState<IndexedSet[]>([ {} ]);
-  const [ exerciseName, setExerciseName ] = useState('');
+  const initialSets: IndexedSet[] = exerciseItem ? (exerciseItem.data as Record<'sets', IndexedSet[]>).sets : [ {} ];
+  const initialExerciseName: string = exerciseItem?.title || '';
+
+  const [ sets, changeSets ] = useState<IndexedSet[]>(initialSets);
+  const [ exerciseName, setExerciseName ] = useState<string>(initialExerciseName);
 
   const dispatch = useAppDispatch();
 
@@ -35,8 +38,9 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
     <View>
       <Text>Edit Date Screen</Text>
       <ExerciseSetsInput
-        index={ sets.length-1 }
+        sets={ sets }
         handleSetsInput={ handleSetsInput }
+        exerciseName={ exerciseName }
         handleExerciseNameInput={ handleExerciseNameInput }
       />
       <Button
