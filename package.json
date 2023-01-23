@@ -6,7 +6,8 @@
     "start": "expo start",
     "clear": "npx expo start --clear",
     "prod": "npx expo start --no-dev --minify",
-    "lint": "npx eslint ."
+    "lint": "npx eslint .",
+    "test": "npm run lint"
   },
   "husky": {
     "hooks": {
