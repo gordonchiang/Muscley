@@ -4,21 +4,21 @@ import type { EditDateScreenProps } from '../navigation/types';
 import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
-import type { IndexedSet } from '../components/SetInput';
+import type { Set } from '../components/SetInput';
 import { ExerciseItem } from './types';
 
 export const EditDateScreen = (props: EditDateScreenProps) => {
   const { navigation, route: { params: { dateString, exerciseItem } } } = props;
 
-  const initialSets: IndexedSet[] = exerciseItem ? (exerciseItem.data as Record<'sets', IndexedSet[]>).sets : [ {} ];
+  const initialSets: Set[] = exerciseItem ? (exerciseItem.data as Record<'sets', Set[]>).sets : [ {} ];
   const initialExerciseName: string = exerciseItem?.title || '';
 
-  const [ sets, changeSets ] = useState<IndexedSet[]>(initialSets);
+  const [ sets, changeSets ] = useState<Set[]>(initialSets);
   const [ exerciseName, setExerciseName ] = useState<string>(initialExerciseName);
 
   const dispatch = useAppDispatch();
 
-  const handleSetsInput = useCallback(({ index, weight, reps }: IndexedSet) => {
+  const handleSetsInput = useCallback(({ weight, reps }: Set, index: number) => {
     changeSets(sets => sets.map((set, i) => {
       return i !== index
         ? set
