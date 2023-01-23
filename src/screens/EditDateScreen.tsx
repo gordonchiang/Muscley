@@ -5,7 +5,7 @@ import { useAppDispatch } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
 import type { Set } from '../components/SetInput';
-import { ExerciseItem } from './types';
+import type { ExerciseItem } from './types';
 
 export const EditDateScreen = (props: EditDateScreenProps) => {
   const { navigation, route: { params: { dateString, exerciseItem } } } = props;
