@@ -21,10 +21,7 @@ export const AgendaListItem = memo(
     if (isEmptyItem(item)) {
       return (
         <View>
-          <Button
-            title='Edit Date'
-            onPress={ () => navigation.navigate('EditDate', { dateString }) }
-          />
+          <Text>No entries for this date</Text>
         </View>
       );
     }
@@ -34,11 +31,7 @@ export const AgendaListItem = memo(
         <Text>{ item.title || 'Untitled' }</Text>
         <Button
           title='View Exercise'
-          onPress={ () => navigation.navigate('ViewExercise', { exerciseItem: item }) }
-        />
-        <Button
-          title='Edit Date'
-          onPress={ () => navigation.navigate('EditDate', { dateString, exerciseItem: item }) }
+          onPress={ () => navigation.navigate('ViewExercise', { dateString, exerciseItem: item }) }
         />
       </View>
     );

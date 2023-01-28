@@ -30,9 +30,7 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
     }));
   }, []);
 
-  const handleExerciseNameInput = (name: string) => {
-    setExerciseName(name);
-  };
+  const handleExerciseNameInput = (name: string) => setExerciseName(name);
 
   return (
     <View>

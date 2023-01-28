@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { SectionListRenderItemInfo, View } from 'react-native';
+import { Button, SectionListRenderItemInfo, View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 import type { CalendarScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
@@ -15,7 +15,7 @@ const SELECTED_DATE_MARKING_PROPS = {
 };
 
 export const CalendarScreen = (props: CalendarScreenProps) => {
-  const { dateString: initialDateString } = props.route.params;
+  const { navigation, route: { params: { dateString: initialDateString } } } = props;
 
   const [ selectedDateString, selectDateString ] = useState(initialDateString);
   const [ markedDates, changeMarkedDates ] = useState({ [initialDateString]: SELECTED_DATE_MARKING_PROPS });
@@ -70,6 +70,10 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
         <AgendaList
           sections={ items }
           renderItem={ renderItem }
+        />
+        <Button
+          title='Add New Entry'
+          onPress={ () => navigation.navigate('EditDate', { dateString: selectedDateString }) }
         />
       </CalendarProvider>
     </View>
