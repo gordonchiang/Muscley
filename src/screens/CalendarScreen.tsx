@@ -73,7 +73,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
         />
         <Button
           title='Add New Entry'
-          onPress={ () => navigation.navigate('EditDate', { dateString: selectedDateString }) }
+          onPress={ () => navigation.navigate('EditEntry', { dateString: selectedDateString }) }
         />
       </CalendarProvider>
     </View>
