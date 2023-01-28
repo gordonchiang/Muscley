@@ -9,9 +9,7 @@ export type RootDrawerParamList = {
 export type CalendarStackParamList = {
   Calendar: { dateString: string };
   EditDate: { dateString: string, exerciseItem?: ExerciseItem };
-  ViewExercise: { dateString: string, exerciseItem: ExerciseItem };
 }
 
 export type CalendarScreenProps = StackScreenProps<CalendarStackParamList, 'Calendar'>;
 export type EditDateScreenProps = StackScreenProps<CalendarStackParamList, 'EditDate'>;
-export type ViewExerciseScreenProps = StackScreenProps<CalendarStackParamList, 'ViewExercise'>;

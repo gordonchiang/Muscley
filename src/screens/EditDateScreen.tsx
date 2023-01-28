@@ -34,7 +34,7 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
 
   return (
     <View>
-      <Text>Edit Date Screen</Text>
+      <Text>{ `Date: ${dateString}` }</Text>
       <ExerciseSetsInput
         sets={ sets }
         handleSetsInput={ handleSetsInput }
@@ -75,6 +75,10 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
 
           navigation.goBack();
         } }
+      />
+      <Button
+        title='Go Back'
+        onPress={ () => navigation.goBack() }
       />
     </View>
   );

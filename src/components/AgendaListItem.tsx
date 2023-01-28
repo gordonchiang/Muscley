@@ -31,7 +31,7 @@ export const AgendaListItem = memo(
         <Text>{ item.title || 'Untitled' }</Text>
         <Button
           title='View Exercise'
-          onPress={ () => navigation.navigate('ViewExercise', { dateString, exerciseItem: item }) }
+          onPress={ () => navigation.navigate('EditDate', { dateString, exerciseItem: item }) }
         />
       </View>
     );
