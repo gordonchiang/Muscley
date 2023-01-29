@@ -10,11 +10,17 @@ export type RootDrawerParamList = {
 export type CalendarStackParamList = {
   Calendar: { dateString: string };
   EditDate: {
-    dateString: string,
+    dateString: string;
     handleAddExercise: (arg0: ExerciseItem) => void;
-    exerciseItem?: ExerciseItem,
+    exerciseItem?: ExerciseItem;
   };
-  EditEntry: { dateString: string, entry?: Entry };
+  EditEntry: {
+    dateString: string;
+    existingEntry?: {
+      entry: Entry;
+      index: number;
+    };
+  };
 }
 
 export type CalendarScreenProps = StackScreenProps<CalendarStackParamList, 'Calendar'>;

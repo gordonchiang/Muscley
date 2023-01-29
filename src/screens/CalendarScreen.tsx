@@ -43,12 +43,12 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
   }, []);
 
   const renderItem = useCallback((itemInfo: SectionListRenderItemInfo<Entry | Record<string, never>>) => {
-    const { item, section: { title: dateString } } = itemInfo;
+    const { index, item, section: { title: dateString } } = itemInfo;
 
     // AgendaList currently forces the section type to be DefaultSectionT
     if (typeof dateString !== 'string') throw new TypeError('`title` passed to `section` in `renderItem` of `AgendaList` is not of type `string`');
 
-    return <AgendaListItem item={ item } dateString={ dateString } />;
+    return <AgendaListItem index={ index } item={ item } dateString={ dateString } />;
   }, []);
 
   return (

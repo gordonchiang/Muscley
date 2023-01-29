@@ -13,11 +13,11 @@ export type Entry = {
 }
 
 export const EditEntryScreen = (props: EditEntryScreenProps) => {
-  const { navigation, route: { params: { dateString, entry } } } = props;
+  const { navigation, route: { params: { dateString, existingEntry: { entry, index } = {} } } } = props;
 
   const [ entryTitle, selectEntryTitle ] = useState(entry?.title ?? '');
   const [ exerciseItems, selectExerciseItems ] = useState<ExerciseItem[]>([]);
-  const items: Entry[] = useAppSelector(({ selectedDate }) => selectedDate.data as Entry[]);
+  const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.data as Entry[] | null);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -60,18 +60,19 @@ export const EditEntryScreen = (props: EditEntryScreenProps) => {
       <Button
         title={ `${entry ? 'Edit' : 'Add'} Entry` }
         onPress={ async () => {
+          const data = [ ...existingEntriesOnSameDate || [] ];
+
           const newEntry: Entry = {
             date: dateString,
-            key: 'test',
-            // key: `${dateString}_entry${entryNumber}_data`,
+            key: `${dateString}_entry${index ?? data.length}_data`,
             title: entryTitle,
           };
 
-          const data = [ ...(items || []), newEntry ];
+          index !== undefined ? data[index] = newEntry : data.push(newEntry);
 
           try {
             await dispatch(saveDataForSelectedDate({ date: dateString, data }));
-            await saveToLocalStorage('test', exerciseItems);
+            await saveToLocalStorage(newEntry.key, exerciseItems);
           } catch(e) {
             // eslint-disable-next-line no-console
             console.log('Error in EditEntryScreen', e);
