@@ -13,7 +13,7 @@ export type Entry = {
 }
 
 export const EditEntryScreen = (props: EditEntryScreenProps) => {
-  const { navigation, route: { params: { dateString, existingEntry: { entry, index } = {} } } } = props;
+  const { navigation, route: { params: { dateString, existingEntry: { entry, index } = {}, exerciseItem } } } = props;
 
   const [ entryTitle, selectEntryTitle ] = useState(entry?.title ?? '');
   const [ exerciseItems, selectExerciseItems ] = useState<ExerciseItem[]>([]);
@@ -29,9 +29,9 @@ export const EditEntryScreen = (props: EditEntryScreenProps) => {
     getDataForEntry();
   }, [ entry ]);
 
-  const handleAddExercise = (newExerciseItem: ExerciseItem) => {
-    selectExerciseItems([ ...exerciseItems, newExerciseItem ]);
-  };
+  useEffect(() => {
+    if (exerciseItem) selectExerciseItems(exerciseItems => [ ...exerciseItems, exerciseItem ]);
+  }, [ exerciseItem ]);
 
   return (
     <View>
@@ -48,14 +48,14 @@ export const EditEntryScreen = (props: EditEntryScreenProps) => {
             <Button
               key={ index }
               title={ item.title || 'Untitled' }
-              onPress={ () => navigation.navigate('EditDate', { dateString, handleAddExercise, exerciseItem: item }) }
+              onPress={ () => navigation.navigate('EditDate', { dateString, exerciseItem: item }) }
             />
           );
         })
       }
       <Button
         title='Add Exercise'
-        onPress={ () => navigation.navigate('EditDate', { dateString, handleAddExercise }) }
+        onPress={ () => navigation.navigate('EditDate', { dateString }) }
       />
       <Button
         title={ `${entry ? 'Edit' : 'Add'} Entry` }

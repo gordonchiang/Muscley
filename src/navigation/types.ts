@@ -11,7 +11,6 @@ export type CalendarStackParamList = {
   Calendar: { dateString: string };
   EditDate: {
     dateString: string;
-    handleAddExercise: (arg0: ExerciseItem) => void;
     exerciseItem?: ExerciseItem;
   };
   EditEntry: {
@@ -20,6 +19,7 @@ export type CalendarStackParamList = {
       entry: Entry;
       index: number;
     };
+    exerciseItem?: ExerciseItem;
   };
 }
 

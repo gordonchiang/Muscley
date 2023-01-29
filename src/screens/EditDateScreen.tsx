@@ -6,7 +6,7 @@ import type { Set } from '../components/SetInput';
 import type { ExerciseItem } from './types';
 
 export const EditDateScreen = (props: EditDateScreenProps) => {
-  const { navigation, route: { params: { dateString, exerciseItem, handleAddExercise } } } = props;
+  const { navigation, route: { params: { dateString, exerciseItem } } } = props;
 
   const initialSets: Set[] = exerciseItem ? (exerciseItem.data as Record<'sets', Set[]>).sets : [ {} ];
   const initialExerciseName: string = exerciseItem?.title || '';
@@ -62,9 +62,11 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
             data: { sets },
           };
 
-          handleAddExercise(data);
-
-          navigation.goBack();
+          navigation.navigate({
+            name: 'EditEntry',
+            params: { dateString, exerciseItem: data },
+            merge: true,
+          });
         } }
       />
       <Button
