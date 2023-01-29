@@ -1,22 +1,18 @@
 import { useCallback, useState } from 'react';
 import { Alert, Button, Text, View } from 'react-native';
 import type { EditDateScreenProps } from '../navigation/types';
-import { useAppDispatch } from '../redux/hooks';
-import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
 import type { Set } from '../components/SetInput';
 import type { ExerciseItem } from './types';
 
 export const EditDateScreen = (props: EditDateScreenProps) => {
-  const { navigation, route: { params: { dateString, exerciseItem } } } = props;
+  const { navigation, route: { params: { dateString, exerciseItem, handleAddExercise } } } = props;
 
   const initialSets: Set[] = exerciseItem ? (exerciseItem.data as Record<'sets', Set[]>).sets : [ {} ];
   const initialExerciseName: string = exerciseItem?.title || '';
 
   const [ sets, changeSets ] = useState<Set[]>(initialSets);
   const [ exerciseName, setExerciseName ] = useState<string>(initialExerciseName);
-
-  const dispatch = useAppDispatch();
 
   const handleSetsInput = useCallback(({ weight, reps }: Set, index: number) => {
     changeSets(sets => sets.map((set, i) => {
@@ -66,12 +62,7 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
             data: { sets },
           };
 
-          try {
-            await dispatch(saveDataForSelectedDate({ date: dateString, data }));
-          } catch(e) {
-            // eslint-disable-next-line no-console
-            console.log('Error in EditDateScreen', e);
-          }
+          handleAddExercise(data);
 
           navigation.goBack();
         } }

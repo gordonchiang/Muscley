@@ -1,16 +1,15 @@
 import type { SelectedDateState } from '../redux/selectedDateSlice';
-import type { ExerciseItem } from '../screens/types';
 
-export type AgendaListItems = [ {
+export type AgendaListItems<T> = [ {
   title: string;
-  data: [ ExerciseItem ] | [ Record<string, never> ];
+  data: T | [ Record<string, never> ];
 } ];
 
-export const selectedDateStateToAgendaListItem = (item: SelectedDateState): AgendaListItems => {
+export function selectedDateStateToAgendaListItem<T>(item: SelectedDateState): AgendaListItems<T> {
   const { date, data } = item;
 
   return [ {
     title: date,
-    data: data ? [ data as ExerciseItem ] : [ {} ],
+    data: data ? data as T : [ {} ],
   } ];
-};
+}

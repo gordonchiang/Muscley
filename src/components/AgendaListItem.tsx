@@ -3,12 +3,12 @@ import { Button, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { CalendarStackParamList } from '../navigation/types';
-import type { ExerciseItem } from '../screens/types';
+import type { Entry } from '../screens/EditEntryScreen';
 
-const isEmptyItem = (item: ExerciseItem | Record<string, never>): item is Record<string, never> => Object.keys(item).length === 0;
+const isEmptyItem = (item: Entry | Record<string, never>): item is Record<string, never> => Object.keys(item).length === 0;
 
 interface AgendaListItemProps {
-  item: ExerciseItem | Record<string, never>;
+  item: Entry | Record<string, never>;
   dateString: string;
 }
 
@@ -30,8 +30,8 @@ export const AgendaListItem = memo(
       <View>
         <Text>{ item.title || 'Untitled' }</Text>
         <Button
-          title='View Exercise'
-          onPress={ () => navigation.navigate('EditDate', { dateString, exerciseItem: item }) }
+          title='View Entry'
+          onPress={ () => navigation.navigate('EditEntry', { dateString, entry: item }) }
         />
       </View>
     );

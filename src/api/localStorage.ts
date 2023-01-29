@@ -19,7 +19,7 @@ export const clearLocalStorage = async () => {
   }
 };
 
-export const saveToLocalStorage = async (key: string, data: unknown ) => {
+export const saveToLocalStorage = async (key: string, data: unknown) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(data));
   } catch (e) {
@@ -28,7 +28,7 @@ export const saveToLocalStorage = async (key: string, data: unknown ) => {
   }
 };
 
-export const getFromLocalStorage = async (key: string ): Promise<unknown> => {
+export const getFromLocalStorage = async (key: string): Promise<unknown> => {
   try {
     const serializedData = await AsyncStorage.getItem(key);
     return serializedData ? JSON.parse(serializedData) : Promise.resolve(null);

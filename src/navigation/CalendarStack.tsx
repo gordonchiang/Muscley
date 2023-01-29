@@ -26,6 +26,7 @@ export const CalendarStack = () => {
       <Stack.Screen
         name='EditEntry'
         component={ EditEntryScreen }
+        options={ { presentation: 'modal' } }
       />
     </Stack.Navigator>
   );
