@@ -13,7 +13,7 @@ export type Entry = {
 }
 
 export const EditEntryScreen = (props: EditEntryScreenProps) => {
-  const { navigation, route: { params: { dateString, existingEntry: { entry, index } = {}, exerciseItem } } } = props;
+  const { navigation, route: { params: { date, existingEntry: { entry, index } = {}, exerciseItem } } } = props;
 
   const [ entryTitle, selectEntryTitle ] = useState(entry?.title ?? '');
   const [ exerciseItems, selectExerciseItems ] = useState<ExerciseItem[]>([]);
@@ -36,7 +36,7 @@ export const EditEntryScreen = (props: EditEntryScreenProps) => {
   return (
     <View>
       <Text>Edit Entry Screen</Text>
-      <Text>{ dateString }</Text>
+      <Text>{ date }</Text>
       <TextInput
         onChangeText={ selectEntryTitle }
         style={ { borderWidth: 1 } }
@@ -48,14 +48,14 @@ export const EditEntryScreen = (props: EditEntryScreenProps) => {
             <Button
               key={ index }
               title={ item.title || 'Untitled' }
-              onPress={ () => navigation.navigate('EditDate', { dateString, exerciseItem: item }) }
+              onPress={ () => navigation.navigate('EditDate', { date, exerciseItem: item }) }
             />
           );
         })
       }
       <Button
         title='Add Exercise'
-        onPress={ () => navigation.navigate('EditDate', { dateString }) }
+        onPress={ () => navigation.navigate('EditDate', { date }) }
       />
       <Button
         title={ `${entry ? 'Edit' : 'Add'} Entry` }
@@ -63,15 +63,15 @@ export const EditEntryScreen = (props: EditEntryScreenProps) => {
           const data = [ ...existingEntriesOnSameDate || [] ];
 
           const newEntry: Entry = {
-            date: dateString,
-            key: `${dateString}_entry${index ?? data.length}_data`,
+            date,
+            key: `${date}_entry${index ?? data.length}_data`,
             title: entryTitle,
           };
 
           index !== undefined ? data[index] = newEntry : data.push(newEntry);
 
           try {
-            await dispatch(saveDataForSelectedDate({ date: dateString, data }));
+            await dispatch(saveDataForSelectedDate({ date, data }));
             await saveToLocalStorage(newEntry.key, exerciseItems);
           } catch(e) {
             // eslint-disable-next-line no-console

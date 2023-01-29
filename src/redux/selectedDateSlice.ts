@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { dateToDateString } from '../utils/dateFunctions';
+import { dateObjectToDateString } from '../utils/dateFunctions';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 
 export interface SelectedDateState {
@@ -33,7 +33,7 @@ export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { dat
 );
 
 const initialState: SelectedDateState = {
-  date: dateToDateString(new Date()),
+  date: dateObjectToDateString(new Date()),
 };
 
 export const selectedDateSlice = createSlice({

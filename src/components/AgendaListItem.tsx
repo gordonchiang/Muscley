@@ -10,12 +10,12 @@ const isEmptyEntry= (entry: Entry | Record<string, never>): entry is Record<stri
 interface AgendaListItemProps {
   index: number;
   item: Entry | Record<string, never>;
-  dateString: string;
+  date: string;
 }
 
 export const AgendaListItem = memo(
   function AgendaListItem(props: AgendaListItemProps) {
-    const { index, item: entry, dateString } = props;
+    const { index, item: entry, date } = props;
 
     const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
 
@@ -32,7 +32,7 @@ export const AgendaListItem = memo(
         <Text>{ entry.title || 'Untitled' }</Text>
         <Button
           title='View Entry'
-          onPress={ () => navigation.navigate('EditEntry', { dateString, existingEntry: { entry, index } }) }
+          onPress={ () => navigation.navigate('EditEntry', { date, existingEntry: { entry, index } }) }
         />
       </View>
     );

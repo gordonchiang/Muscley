@@ -3,20 +3,19 @@ import type { CalendarStackParamList } from './types';
 import { CalendarScreen } from '../screens/CalendarScreen';
 import { EditDateScreen } from '../screens/EditDateScreen';
 import { EditEntryScreen } from '../screens/EditEntryScreen';
-import { dateToDateString } from '../utils/dateFunctions';
+import { dateObjectToDateString } from '../utils/dateFunctions';
 
 const Stack = createStackNavigator<CalendarStackParamList>();
 
 export const CalendarStack = () => {
-  const today = new Date();
-  const todayDateString = dateToDateString(today);
+  const todayDateString = dateObjectToDateString(new Date());
 
   return (
     <Stack.Navigator>
       <Stack.Screen
         name='Calendar'
         component={ CalendarScreen }
-        initialParams={ { dateString: todayDateString } }
+        initialParams={ { date: todayDateString } }
       />
       <Stack.Screen
         name='EditDate'

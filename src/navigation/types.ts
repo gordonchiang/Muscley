@@ -8,13 +8,13 @@ export type RootDrawerParamList = {
 };
 
 export type CalendarStackParamList = {
-  Calendar: { dateString: string };
+  Calendar: { date: string };
   EditDate: {
-    dateString: string;
+    date: string;
     exerciseItem?: ExerciseItem;
   };
   EditEntry: {
-    dateString: string;
+    date: string;
     existingEntry?: {
       entry: Entry;
       index: number;

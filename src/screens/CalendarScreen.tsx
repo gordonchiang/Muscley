@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Button, SectionListRenderItemInfo, View } from 'react-native';
-import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
+import { AgendaList, CalendarProvider, DateData, ExpandableCalendar } from 'react-native-calendars';
 import type { CalendarScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
@@ -15,46 +15,46 @@ const SELECTED_DATE_MARKING_PROPS = {
 };
 
 export const CalendarScreen = (props: CalendarScreenProps) => {
-  const { navigation, route: { params: { dateString: initialDateString } } } = props;
+  const { navigation, route: { params: { date: initialDate } } } = props;
 
-  const [ selectedDateString, selectDateString ] = useState(initialDateString);
-  const [ markedDates, changeMarkedDates ] = useState({ [initialDateString]: SELECTED_DATE_MARKING_PROPS });
+  const [ selectedDate, selectDate ] = useState(initialDate);
+  const [ markedDates, changeMarkedDates ] = useState({ [initialDate]: SELECTED_DATE_MARKING_PROPS });
   const items: AgendaListItems<Entry[]> = useAppSelector(({ selectedDate }) => selectedDateStateToAgendaListItem<Entry[]>(selectedDate));
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getItems = async () => {
-      await dispatch(fetchDataForSelectedDate(selectedDateString));
+      await dispatch(fetchDataForSelectedDate(selectedDate));
     };
 
     getItems();
-  }, [ dispatch, selectedDateString ]);
+  }, [ dispatch, selectedDate ]);
 
-  const onDayPress = useCallback(({ dateString }: { dateString: string }) => {
-    selectDateString(dateString);
-    changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });    
+  const onDayPress = useCallback(({ dateString: date }: DateData) => {
+    selectDate(date);
+    changeMarkedDates({ [date]: SELECTED_DATE_MARKING_PROPS });    
   }, []);
 
-  const onDateChanged = useCallback((dateString: string, updateSource: string) => {
+  const onDateChanged = useCallback((date: string, updateSource: string) => {
     if (updateSource !== 'todayPress') return;
     
-    selectDateString(dateString);
-    changeMarkedDates({ [dateString]: SELECTED_DATE_MARKING_PROPS });    
+    selectDate(date);
+    changeMarkedDates({ [date]: SELECTED_DATE_MARKING_PROPS });    
   }, []);
 
   const renderItem = useCallback((itemInfo: SectionListRenderItemInfo<Entry | Record<string, never>>) => {
-    const { index, item, section: { title: dateString } } = itemInfo;
+    const { index, item, section: { title: date } } = itemInfo;
 
     // AgendaList currently forces the section type to be DefaultSectionT
-    if (typeof dateString !== 'string') throw new TypeError('`title` passed to `section` in `renderItem` of `AgendaList` is not of type `string`');
+    if (typeof date !== 'string') throw new TypeError('`title` passed to `section` in `renderItem` of `AgendaList` is not of type `string`');
 
-    return <AgendaListItem index={ index } item={ item } dateString={ dateString } />;
+    return <AgendaListItem index={ index } item={ item } date={ date } />;
   }, []);
 
   return (
     <View style={ { flex: 1 } }>
       <CalendarProvider
-        date={ initialDateString }
+        date={ initialDate }
         onDateChanged={ onDateChanged }
         showTodayButton= { true }
       >
@@ -73,7 +73,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
         />
         <Button
           title='Add New Entry'
-          onPress={ () => navigation.navigate('EditEntry', { dateString: selectedDateString }) }
+          onPress={ () => navigation.navigate('EditEntry', { date: selectedDate }) }
         />
       </CalendarProvider>
     </View>
