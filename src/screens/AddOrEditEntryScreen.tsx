@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
-import type { EditEntryScreenProps } from '../navigation/types';
+import type { AddOrEditEntryScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
@@ -12,7 +12,7 @@ export type Entry = {
   title?: string;
 }
 
-export const EditEntryScreen = (props: EditEntryScreenProps) => {
+export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
   const { navigation, route: { params: { date, existingEntry: { entry, index } = {}, exerciseItem } } } = props;
 
   const [ entryTitle, selectEntryTitle ] = useState(entry?.title ?? '');
@@ -75,7 +75,7 @@ export const EditEntryScreen = (props: EditEntryScreenProps) => {
             await saveToLocalStorage(newEntry.key, exerciseItems);
           } catch(e) {
             // eslint-disable-next-line no-console
-            console.log('Error in EditEntryScreen', e);
+            console.log('Error in AddOrEditEntryScreen', e);
           }
 
           navigation.goBack();

@@ -1,5 +1,5 @@
 import type { StackScreenProps } from '@react-navigation/stack';
-import { Entry } from '../screens/EditEntryScreen';
+import { Entry } from '../screens/AddOrEditEntryScreen';
 import type { ExerciseItem } from '../screens/types';
 
 export type RootDrawerParamList = {
@@ -13,7 +13,7 @@ export type CalendarStackParamList = {
     date: string;
     exerciseItem?: ExerciseItem;
   };
-  EditEntry: {
+  AddOrEditEntry: {
     date: string;
     existingEntry?: {
       entry: Entry;
@@ -25,4 +25,4 @@ export type CalendarStackParamList = {
 
 export type CalendarScreenProps = StackScreenProps<CalendarStackParamList, 'Calendar'>;
 export type EditDateScreenProps = StackScreenProps<CalendarStackParamList, 'EditDate'>;
-export type EditEntryScreenProps = StackScreenProps<CalendarStackParamList, 'EditEntry'>;
+export type AddOrEditEntryScreenProps = StackScreenProps<CalendarStackParamList, 'AddOrEditEntry'>;

@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import type { CalendarStackParamList } from './types';
 import { CalendarScreen } from '../screens/CalendarScreen';
 import { EditDateScreen } from '../screens/EditDateScreen';
-import { EditEntryScreen } from '../screens/EditEntryScreen';
+import { AddOrEditEntryScreen } from '../screens/AddOrEditEntryScreen';
 import { dateObjectToDateString } from '../utils/dateFunctions';
 
 const Stack = createStackNavigator<CalendarStackParamList>();
@@ -23,8 +23,8 @@ export const CalendarStack = () => {
         options={ { presentation: 'modal' } }
       />
       <Stack.Screen
-        name='EditEntry'
-        component={ EditEntryScreen }
+        name='AddOrEditEntry'
+        component={ AddOrEditEntryScreen }
         options={ { presentation: 'modal' } }
       />
     </Stack.Navigator>

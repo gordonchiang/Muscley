@@ -5,7 +5,7 @@ import type { CalendarScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
 import { AgendaListItem } from '../components/AgendaListItem';
-import type { Entry } from './EditEntryScreen';
+import type { Entry } from './AddOrEditEntryScreen';
 import { AgendaListItems, selectedDateStateToAgendaListItem } from '../api/calendar';
 
 const SELECTED_DATE_MARKING_PROPS = {
@@ -73,7 +73,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
         />
         <Button
           title='Add New Entry'
-          onPress={ () => navigation.navigate('EditEntry', { date: selectedDate }) }
+          onPress={ () => navigation.navigate('AddOrEditEntry', { date: selectedDate }) }
         />
       </CalendarProvider>
     </View>

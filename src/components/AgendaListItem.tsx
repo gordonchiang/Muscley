@@ -3,7 +3,7 @@ import { Button, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { CalendarStackParamList } from '../navigation/types';
-import type { Entry } from '../screens/EditEntryScreen';
+import type { Entry } from '../screens/AddOrEditEntryScreen';
 
 const isEmptyEntry= (entry: Entry | Record<string, never>): entry is Record<string, never> => Object.keys(entry).length === 0;
 
@@ -32,7 +32,7 @@ export const AgendaListItem = memo(
         <Text>{ entry.title || 'Untitled' }</Text>
         <Button
           title='View Entry'
-          onPress={ () => navigation.navigate('EditEntry', { date, existingEntry: { entry, index } }) }
+          onPress={ () => navigation.navigate('AddOrEditEntry', { date, existingEntry: { entry, index } }) }
         />
       </View>
     );

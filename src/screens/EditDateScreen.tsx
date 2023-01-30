@@ -63,7 +63,7 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
           };
 
           navigation.navigate({
-            name: 'EditEntry',
+            name: 'AddOrEditEntry',
             params: { date, exerciseItem: data },
             merge: true,
           });
