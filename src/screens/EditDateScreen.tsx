@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
 import type { Set } from '../components/SetInput';
@@ -19,28 +18,21 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
     index,
   } = props;
 
-  const [ sets, changeSets ] = useState<Set[]>([ {} ]);
-
-  useEffect(() => {
-    const newSets: Set[] = data as Set[] ?? [ {} ];
-    changeSets(newSets);
-  }, [ data ]);
+  const sets: Set[] = data as Set[] ?? [ {} ];
 
   const handleSetsInput = ({ weight, reps }: Set, i: number) => {
-    const updatedSets = sets.map((set, j) => {
-      return i !== j
-        ? set
-        : {
-          ...set,
-          ...(weight && { weight }),
-          ...(reps && { reps }),
-        };
-    });
-
     const newExerciseItem: ExerciseItem = {
       date,
       title,
-      data: updatedSets,
+      data: sets.map((set, j) => {
+        return i !== j
+          ? set
+          : {
+            ...set,
+            ...(weight && { weight }),
+            ...(reps && { reps }),
+          };
+      }),
     };
     
     handleExerciseInput(newExerciseItem, index);
