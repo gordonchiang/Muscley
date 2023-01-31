@@ -1,12 +1,17 @@
 import { useCallback, useState } from 'react';
 import { Alert, Button, Text, View } from 'react-native';
-import type { EditDateScreenProps } from '../navigation/types';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
 import type { Set } from '../components/SetInput';
 import type { ExerciseItem } from './types';
 
+interface EditDateScreenProps {
+  date: string;
+  exerciseItem?: ExerciseItem;
+  handleAddExercise: (arg0: ExerciseItem) => void;
+}
+
 export const EditDateScreen = (props: EditDateScreenProps) => {
-  const { navigation, route: { params: { date, exerciseItem } } } = props;
+  const { date, exerciseItem, handleAddExercise } = props;
 
   const initialSets: Set[] = exerciseItem ? (exerciseItem.data as Record<'sets', Set[]>).sets : [ {} ];
   const initialExerciseName: string = exerciseItem?.title || '';
@@ -44,7 +49,7 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
         } }
       />
       <Button
-        title='Add Exercise'
+        title='Save Exercise'
         onPress={ async () => {
           if (exerciseName === '') {
             Alert.alert('Error', 'Please input an exercise name');
@@ -62,16 +67,8 @@ export const EditDateScreen = (props: EditDateScreenProps) => {
             data: { sets },
           };
 
-          navigation.navigate({
-            name: 'AddOrEditEntry',
-            params: { date, exerciseItem: data },
-            merge: true,
-          });
+          handleAddExercise(data);
         } }
-      />
-      <Button
-        title='Go Back'
-        onPress={ () => navigation.goBack() }
       />
     </View>
   );

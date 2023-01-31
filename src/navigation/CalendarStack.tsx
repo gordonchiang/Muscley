@@ -1,7 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import type { CalendarStackParamList } from './types';
 import { CalendarScreen } from '../screens/CalendarScreen';
-import { EditDateScreen } from '../screens/EditDateScreen';
 import { AddOrEditEntryScreen } from '../screens/AddOrEditEntryScreen';
 import { dateObjectToDateString } from '../utils/dateFunctions';
 
@@ -16,11 +15,6 @@ export const CalendarStack = () => {
         name='Calendar'
         component={ CalendarScreen }
         initialParams={ { date: todayDateString } }
-      />
-      <Stack.Screen
-        name='EditDate'
-        component={ EditDateScreen }
-        options={ { presentation: 'modal' } }
       />
       <Stack.Screen
         name='AddOrEditEntry'

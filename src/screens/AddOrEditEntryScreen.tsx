@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { ExerciseItem } from './types';
+import { EditDateScreen } from './EditDateScreen';
 
 export type Entry = {
   date: string;
@@ -13,10 +14,10 @@ export type Entry = {
 }
 
 export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
-  const { navigation, route: { params: { date, existingEntry: { entry, index } = {}, exerciseItem } } } = props;
+  const { navigation, route: { params: { date, existingEntry: { entry, index } = {} } } } = props;
 
   const [ entryTitle, selectEntryTitle ] = useState(entry?.title ?? '');
-  const [ exerciseItems, selectExerciseItems ] = useState<ExerciseItem[]>([]);
+  const [ exerciseItems, selectExerciseItems ] = useState<(ExerciseItem | undefined)[]>([]);
   const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.data as Entry[] | null);
   const dispatch = useAppDispatch();
 
@@ -29,9 +30,9 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
     getDataForEntry();
   }, [ entry ]);
 
-  useEffect(() => {
-    if (exerciseItem) selectExerciseItems(exerciseItems => [ ...exerciseItems, exerciseItem ]);
-  }, [ exerciseItem ]);
+  const handleAddExercise = (exerciseItem?: ExerciseItem) => {
+    selectExerciseItems(exerciseItems => [ ...exerciseItems, exerciseItem ]);
+  };
 
   return (
     <View>
@@ -43,19 +44,20 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
         value={ entryTitle }
       />
       {
-        exerciseItems.length > 0 && exerciseItems.map((item: ExerciseItem, index: number) => {
+        exerciseItems.length > 0 && exerciseItems.map((exerciseItem: ExerciseItem | undefined, index: number) => {
           return (
-            <Button
+            <EditDateScreen
               key={ index }
-              title={ item.title || 'Untitled' }
-              onPress={ () => navigation.navigate('EditDate', { date, exerciseItem: item }) }
+              date={ date }
+              exerciseItem={ exerciseItem }
+              handleAddExercise={ handleAddExercise }
             />
           );
         })
       }
       <Button
         title='Add Exercise'
-        onPress={ () => navigation.navigate('EditDate', { date }) }
+        onPress={ () => handleAddExercise() }
       />
       <Button
         title={ `${entry ? 'Edit' : 'Add'} Entry` }
