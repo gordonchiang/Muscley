@@ -16,22 +16,29 @@ export type Entry = {
 export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
   const { navigation, route: { params: { date, existingEntry: { entry, index } = {} } } } = props;
 
-  const [ entryTitle, selectEntryTitle ] = useState(entry?.title ?? '');
-  const [ exerciseItems, selectExerciseItems ] = useState<(ExerciseItem | undefined)[]>([]);
+  const [ entryTitle, setEntryTitle ] = useState(entry?.title ?? '');
+  const [ exerciseItems, setExerciseItems ] = useState<(ExerciseItem | undefined)[]>([]);
   const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.data as Entry[] | null);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getDataForEntry = async () => {
       const data = entry?.key && await getFromLocalStorage(entry.key);
-      if (data) selectExerciseItems(data as ExerciseItem[]);
+      if (data) setExerciseItems(data as ExerciseItem[]);
     };
 
     getDataForEntry();
   }, [ entry ]);
 
-  const handleAddExercise = (exerciseItem?: ExerciseItem) => {
-    selectExerciseItems(exerciseItems => [ ...exerciseItems, exerciseItem ]);
+  const handleExerciseInput = (exerciseItem?: ExerciseItem, index?: number) => {
+    if (!exerciseItem || index === undefined) {
+      setExerciseItems(exerciseItems.concat(exerciseItem));
+      return;
+    }
+
+    const updatedExerciseItems = [ ...exerciseItems ];
+    updatedExerciseItems[index] = exerciseItem;
+    setExerciseItems(updatedExerciseItems);
   };
 
   return (
@@ -39,7 +46,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
       <Text>Edit Entry Screen</Text>
       <Text>{ date }</Text>
       <TextInput
-        onChangeText={ selectEntryTitle }
+        onChangeText={ setEntryTitle }
         style={ { borderWidth: 1 } }
         value={ entryTitle }
       />
@@ -48,16 +55,17 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
           return (
             <EditDateScreen
               key={ index }
+              index={ index }
               date={ date }
               exerciseItem={ exerciseItem }
-              handleAddExercise={ handleAddExercise }
+              handleExerciseInput={ handleExerciseInput }
             />
           );
         })
       }
       <Button
         title='Add Exercise'
-        onPress={ () => handleAddExercise() }
+        onPress={ () => handleExerciseInput() }
       />
       <Button
         title={ `${entry ? 'Edit' : 'Add'} Entry` }

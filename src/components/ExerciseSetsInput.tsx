@@ -1,16 +1,14 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { Set, SetInput } from './SetInput';
 
 interface ExerciseSetsProps {
   sets: Set[];
   handleSetsInput: (arg0: Set, arg1: number) => void;
-  exerciseName: string;
-  handleExerciseNameInput: (arg0: string) => void;
 }
 
 export const ExerciseSetsInput = (props: ExerciseSetsProps) => {
-  const { sets, handleSetsInput, exerciseName, handleExerciseNameInput } = props;
+  const { sets, handleSetsInput } = props;
 
   const [ displaySets, changeDisplaySets ] = useState<ReactElement[]>([]);
 
@@ -31,11 +29,6 @@ export const ExerciseSetsInput = (props: ExerciseSetsProps) => {
 
   return (
     <View>
-      <TextInput
-        onChangeText={ handleExerciseNameInput }
-        style={ { borderWidth: 1 } }
-        value={ exerciseName }
-      />
       { displaySets }
     </View>
   );

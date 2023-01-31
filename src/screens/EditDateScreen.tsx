@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { Alert, Button, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Button, TextInput, View } from 'react-native';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
 import type { Set } from '../components/SetInput';
 import type { ExerciseItem } from './types';
@@ -7,67 +7,76 @@ import type { ExerciseItem } from './types';
 interface EditDateScreenProps {
   date: string;
   exerciseItem?: ExerciseItem;
-  handleAddExercise: (arg0: ExerciseItem) => void;
+  handleExerciseInput: (arg0?: ExerciseItem, index?: number) => void;
+  index: number;
 }
 
 export const EditDateScreen = (props: EditDateScreenProps) => {
-  const { date, exerciseItem, handleAddExercise } = props;
+  const {
+    date,
+    exerciseItem: { data, title } = { data: null, title: '' },
+    handleExerciseInput,
+    index,
+  } = props;
 
-  const initialSets: Set[] = exerciseItem ? (exerciseItem.data as Record<'sets', Set[]>).sets : [ {} ];
-  const initialExerciseName: string = exerciseItem?.title || '';
+  const [ sets, changeSets ] = useState<Set[]>([ {} ]);
 
-  const [ sets, changeSets ] = useState<Set[]>(initialSets);
-  const [ exerciseName, setExerciseName ] = useState<string>(initialExerciseName);
+  useEffect(() => {
+    const newSets: Set[] = data as Set[] ?? [ {} ];
+    changeSets(newSets);
+  }, [ data ]);
 
-  const handleSetsInput = useCallback(({ weight, reps }: Set, index: number) => {
-    changeSets(sets => sets.map((set, i) => {
-      return i !== index
+  const handleSetsInput = ({ weight, reps }: Set, i: number) => {
+    const updatedSets = sets.map((set, j) => {
+      return i !== j
         ? set
         : {
           ...set,
           ...(weight && { weight }),
           ...(reps && { reps }),
         };
-    }));
-  }, []);
+    });
 
-  const handleExerciseNameInput = (name: string) => setExerciseName(name);
+    const newExerciseItem: ExerciseItem = {
+      date,
+      title,
+      data: updatedSets,
+    };
+    
+    handleExerciseInput(newExerciseItem, index);
+  };
+
+  const handleExerciseNameInput = (newExerciseName: string) => {
+    const newExerciseItem: ExerciseItem = {
+      date,
+      title: newExerciseName,
+      data: sets,
+    };
+    
+    handleExerciseInput(newExerciseItem, index);
+  };
 
   return (
     <View>
-      <Text>{ `Date: ${date}` }</Text>
+      <TextInput
+        onChangeText={ handleExerciseNameInput }
+        style={ { borderWidth: 1 } }
+        value={ title }
+      />
       <ExerciseSetsInput
         sets={ sets }
         handleSetsInput={ handleSetsInput }
-        exerciseName={ exerciseName }
-        handleExerciseNameInput={ handleExerciseNameInput }
       />
       <Button
         title='Add Another Set'
         onPress={ () => {
-          changeSets(sets.concat({}));
-        } }
-      />
-      <Button
-        title='Save Exercise'
-        onPress={ async () => {
-          if (exerciseName === '') {
-            Alert.alert('Error', 'Please input an exercise name');
-            return;
-          }
-
-          if (!sets.every(set => set.weight && set.reps)) {
-            Alert.alert('Error', 'Please complete all sets');
-            return;
-          }
-
-          const data: ExerciseItem = {
+          const newExerciseItem: ExerciseItem = {
             date,
-            title: exerciseName,
-            data: { sets },
+            title,
+            data: sets.concat({}),
           };
 
-          handleAddExercise(data);
+          handleExerciseInput(newExerciseItem, index);
         } }
       />
     </View>
