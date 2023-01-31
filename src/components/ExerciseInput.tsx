@@ -1,16 +1,16 @@
 import { Button, TextInput, View } from 'react-native';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
 import type { Set } from '../components/SetInput';
-import type { ExerciseItem } from './types';
+import type { ExerciseItem } from '../screens/types';
 
-interface EditDateScreenProps {
+interface ExerciseInputProps {
   date: string;
   exerciseItem?: ExerciseItem;
   handleExerciseInput: (arg0?: ExerciseItem, index?: number) => void;
   index: number;
 }
 
-export const EditDateScreen = (props: EditDateScreenProps) => {
+export const ExerciseInput = (props: ExerciseInputProps) => {
   const {
     date,
     exerciseItem: { data, title } = { data: null, title: '' },

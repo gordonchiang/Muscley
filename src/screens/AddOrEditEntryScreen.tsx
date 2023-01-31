@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { ExerciseItem } from './types';
-import { EditDateScreen } from './EditDateScreen';
+import { ExerciseInput } from '../components/ExerciseInput';
 
 export type Entry = {
   date: string;
@@ -53,7 +53,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
       {
         exerciseItems.length > 0 && exerciseItems.map((exerciseItem: ExerciseItem | undefined, index: number) => {
           return (
-            <EditDateScreen
+            <ExerciseInput
               key={ index }
               index={ index }
               date={ date }
