@@ -5,7 +5,7 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import type { CalendarStackParamList } from '../navigation/types';
 import type { Entry } from '../screens/AddOrEditEntryScreen';
 
-const isEmptyEntry= (entry: Entry | Record<string, never>): entry is Record<string, never> => Object.keys(entry).length === 0;
+const isEmptyEntry = (entry: Entry | Record<string, never>): entry is Record<string, never> => Object.keys(entry).length === 0;
 
 interface AgendaListItemProps {
   index: number;
