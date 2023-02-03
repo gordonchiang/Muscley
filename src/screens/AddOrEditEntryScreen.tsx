@@ -57,6 +57,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
             <Accordion
               key={ index }
               label={ exerciseItem?.title ?? '' }
+              expandedByDefault={ !exerciseItem }
               item={    
                 <ExerciseInput
                   index={ index }
