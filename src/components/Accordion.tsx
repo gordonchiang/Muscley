@@ -4,12 +4,13 @@ import { ListItem } from '@rneui/themed';
 interface AccordionProps {
   label: string;
   item: ReactElement | ReactElement[];
+  expandedByDefault?: boolean;
 }
 
 export const Accordion = (props: AccordionProps) => {
-  const { label, item } = props;
+  const { label, item, expandedByDefault = false } = props;
 
-  const [ expanded, setExpanded ] = useState<boolean>(true);
+  const [ expanded, setExpanded ] = useState<boolean>(expandedByDefault);
 
   return (
     <ListItem.Accordion
