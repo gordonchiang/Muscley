@@ -8,24 +8,26 @@ export type Set = {
 
 interface SetInputProps {
   handleSetInput: (arg0: Set) => void;
-  weightPlaceholder?: string;
-  repsPlaceholder?: string;
+  initialValues?: Set;
+  placeholders?: Set;
 }
 
 export const SetInput = (props: SetInputProps) => {
-  const { handleSetInput, weightPlaceholder, repsPlaceholder } = props;
+  const { handleSetInput, initialValues, placeholders } = props;
 
   return (
     <View style={ styles.container }>
       <Text>Weight: </Text>
       <DigitInput
         handleDigitInput={ weight => handleSetInput({ weight }) }
-        placeholder={ weightPlaceholder }
+        initialValue={ initialValues?.weight }
+        placeholder={ placeholders?.weight }
       />
       <Text> Rep: </Text>
       <DigitInput
         handleDigitInput={ reps => handleSetInput({ reps }) }
-        placeholder={ repsPlaceholder }
+        initialValue={ initialValues?.reps }
+        placeholder={ placeholders?.reps }
       />
     </View>
   );
