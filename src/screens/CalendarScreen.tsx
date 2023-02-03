@@ -4,7 +4,7 @@ import { AgendaList, CalendarProvider, DateData, ExpandableCalendar } from 'reac
 import type { CalendarScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
-import { AgendaListItem } from '../components/AgendaListItem';
+import { AgendaListEntry } from '../components/AgendaListEntry';
 import type { Entry } from './AddOrEditEntryScreen';
 import { AgendaListItems, selectedDateStateToAgendaListItem } from '../api/calendar';
 
@@ -48,7 +48,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
     // AgendaList currently forces the section type to be DefaultSectionT
     if (typeof date !== 'string') throw new TypeError('`title` passed to `section` in `renderItem` of `AgendaList` is not of type `string`');
 
-    return <AgendaListItem index={ index } item={ item } date={ date } />;
+    return <AgendaListEntry index={ index } entry={ item } date={ date } />;
   }, []);
 
   return (

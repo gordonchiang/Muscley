@@ -7,15 +7,15 @@ import type { Entry } from '../screens/AddOrEditEntryScreen';
 
 const isEmptyEntry = (entry: Entry | Record<string, never>): entry is Record<string, never> => Object.keys(entry).length === 0;
 
-interface AgendaListItemProps {
+interface AgendaListEntryProps {
   index: number;
-  item: Entry | Record<string, never>;
+  entry: Entry | Record<string, never>;
   date: string;
 }
 
-export const AgendaListItem = memo(
-  function AgendaListItem(props: AgendaListItemProps) {
-    const { index, item: entry, date } = props;
+export const AgendaListEntry = memo(
+  function AgendaListItem(props: AgendaListEntryProps) {
+    const { index, entry, date } = props;
 
     const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
 
