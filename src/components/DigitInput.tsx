@@ -10,7 +10,7 @@ interface DigitInputProps {
 export const DigitInput = (props: DigitInputProps) => {
   const { handleDigitInput, initialValue = '', placeholder } = props;
 
-  const [ digitString, setDigitString ] = useState(initialValue);
+  const [ digitString, setDigitString ] = useState<string>(initialValue);
 
   return (
     <View style={ styles.container }>
