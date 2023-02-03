@@ -6,6 +6,7 @@ import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { ExerciseItem } from './types';
 import { ExerciseInput } from '../components/ExerciseInput';
+import { Accordion } from '../components/Accordion';
 
 export type Entry = {
   date: string;
@@ -53,12 +54,17 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
       {
         exerciseItems.length > 0 && exerciseItems.map((exerciseItem: ExerciseItem | undefined, index: number) => {
           return (
-            <ExerciseInput
+            <Accordion
               key={ index }
-              index={ index }
-              date={ date }
-              exerciseItem={ exerciseItem }
-              handleExerciseInput={ handleExerciseInput }
+              label={ exerciseItem?.title ?? '' }
+              item={    
+                <ExerciseInput
+                  index={ index }
+                  date={ date }
+                  exerciseItem={ exerciseItem }
+                  handleExerciseInput={ handleExerciseInput }
+                />
+              }
             />
           );
         })
