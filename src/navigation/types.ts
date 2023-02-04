@@ -7,7 +7,7 @@ export type RootDrawerParamList = {
 };
 
 export type CalendarStackParamList = {
-  Calendar: { date: string };
+  Calendar: { date?: string };
   AddOrEditEntry: {
     date: string;
     existingEntry?: {
