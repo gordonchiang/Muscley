@@ -17,7 +17,7 @@ export type Entry = {
 export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
   const { navigation, route: { params: { date, existingEntry: { entry, index } = {} } } } = props;
 
-  const [ entryTitle, setEntryTitle ] = useState(entry?.title ?? '');
+  const [ entryTitle, setEntryTitle ] = useState<string>(entry?.title ?? '');
   const [ exerciseItems, setExerciseItems ] = useState<(ExerciseItem | undefined)[]>([]);
   const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.data as Entry[] | null);
   const dispatch = useAppDispatch();

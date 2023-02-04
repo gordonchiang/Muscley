@@ -19,8 +19,8 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
   const { navigation, route: { params: { date } = {} } } = props;
   const initialDate: string = date ?? dateObjectToDateString(new Date());
 
-  const [ selectedDate, selectDate ] = useState(initialDate);
-  const [ markedDates, changeMarkedDates ] = useState({ [initialDate]: SELECTED_DATE_MARKING_PROPS });
+  const [ selectedDate, selectDate ] = useState<string>(initialDate);
+  const [ markedDates, changeMarkedDates ] = useState<Record<string, typeof SELECTED_DATE_MARKING_PROPS>>({ [initialDate]: SELECTED_DATE_MARKING_PROPS });
   const items: AgendaListItems<Entry[]> = useAppSelector(({ selectedDate }) => selectedDateStateToAgendaListItem<Entry[]>(selectedDate));
   const dispatch = useAppDispatch();
 

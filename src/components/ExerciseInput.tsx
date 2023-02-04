@@ -8,6 +8,7 @@ interface ExerciseInputProps {
   exerciseItem?: ExerciseItem;
   handleExerciseInput: (arg0?: ExerciseItem, index?: number) => void;
   index: number;
+  plannedSets?: Set[];
 }
 
 export const ExerciseInput = (props: ExerciseInputProps) => {
@@ -16,6 +17,7 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
     exerciseItem: { data, title } = { data: null, title: '' },
     handleExerciseInput,
     index,
+    plannedSets,
   } = props;
 
   const sets: Set[] = data as Set[] ?? [ {} ];
@@ -58,6 +60,7 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
       <ExerciseSetsInput
         sets={ sets }
         handleSetsInput={ handleSetsInput }
+        plannedSets={ plannedSets }
       />
       <Button
         title='Add Another Set'
