@@ -7,7 +7,7 @@ import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
 import { AgendaListEntry } from '../components/AgendaListEntry';
 import type { Entry } from './AddOrEditEntryScreen';
 import { AgendaListItems, selectedDateStateToAgendaListItem } from '../api/calendar';
-import { dateObjectToString } from '../utils/dateFunctions';
+import { dateObjectToString } from '../utils/date';
 
 const SELECTED_DATE_MARKING_PROPS = {
   selected: true,
