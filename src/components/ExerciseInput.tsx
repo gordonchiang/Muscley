@@ -6,7 +6,7 @@ import type { ExerciseItem } from '../screens/types';
 interface ExerciseInputProps {
   date: string;
   exerciseItem?: ExerciseItem;
-  handleExerciseInput: (arg0?: ExerciseItem, index?: number) => void;
+  handleExerciseInput: (arg0: ExerciseItem, index?: number) => void;
   index: number;
   plannedSets?: Set[];
 }

@@ -18,7 +18,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
   const { navigation, route: { params: { date, existingEntry: { entry, index } = {} } } } = props;
 
   const [ entryTitle, setEntryTitle ] = useState<string>(entry?.title ?? '');
-  const [ exerciseItems, setExerciseItems ] = useState<(ExerciseItem | undefined)[]>([]);
+  const [ exerciseItems, setExerciseItems ] = useState<(ExerciseItem | null)[]>([]);
   const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.data as Entry[] | null);
   const dispatch = useAppDispatch();
 
@@ -31,7 +31,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
     getDataForEntry();
   }, [ entry ]);
 
-  const handleExerciseInput = (exerciseItem?: ExerciseItem, index?: number) => {
+  const handleExerciseInput = (exerciseItem: ExerciseItem | null, index?: number) => {
     if (!exerciseItem || index === undefined) {
       setExerciseItems(exerciseItems.concat(exerciseItem));
       return;
@@ -52,7 +52,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
         value={ entryTitle }
       />
       {
-        exerciseItems.length > 0 && exerciseItems.map((exerciseItem: ExerciseItem | undefined, index: number) => {
+        exerciseItems.length > 0 && exerciseItems.map((exerciseItem: ExerciseItem | null, index: number) => {
           return (
             <Accordion
               key={ index }
@@ -62,7 +62,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
                 <ExerciseInput
                   index={ index }
                   date={ date }
-                  exerciseItem={ exerciseItem }
+                  exerciseItem={ exerciseItem ?? undefined }
                   handleExerciseInput={ handleExerciseInput }
                 />
               }
@@ -72,7 +72,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
       }
       <Button
         title='Add Exercise'
-        onPress={ () => handleExerciseInput() }
+        onPress={ () => handleExerciseInput(null) }
       />
       <Button
         title={ `${entry ? 'Edit' : 'Add'} Entry` }
