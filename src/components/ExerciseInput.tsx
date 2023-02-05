@@ -1,10 +1,13 @@
 import { Button, TextInput, View } from 'react-native';
 import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
 import type { Set } from '../components/SetInput';
-import type { ExerciseItem } from '../screens/types';
+
+export type ExerciseItem = {
+  title: string;
+  sets?: Set[];
+};
 
 interface ExerciseInputProps {
-  date: string;
   exerciseItem?: ExerciseItem;
   handleExerciseInput: (arg0: ExerciseItem, index?: number) => void;
   index: number;
@@ -12,21 +15,14 @@ interface ExerciseInputProps {
 }
 
 export const ExerciseInput = (props: ExerciseInputProps) => {
-  const {
-    date,
-    exerciseItem: { data, title } = { data: null, title: '' },
-    handleExerciseInput,
-    index,
-    plannedSets,
-  } = props;
-
-  const sets: Set[] = data as Set[] ?? [ {} ];
+  const { exerciseItem, handleExerciseInput, index, plannedSets } = props;
+  const title: string = exerciseItem?.title ?? '';
+  const sets: Set[] = exerciseItem?.sets ?? [ {} ];
 
   const handleSetsInput = ({ weight, reps }: Set, i: number) => {
     const newExerciseItem: ExerciseItem = {
-      date,
       title,
-      data: sets.map((set, j) => {
+      sets: sets.map((set, j) => {
         return i !== j
           ? set
           : {
@@ -42,9 +38,8 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
 
   const handleExerciseNameInput = (newExerciseName: string) => {
     const newExerciseItem: ExerciseItem = {
-      date,
       title: newExerciseName,
-      data: sets,
+      sets,
     };
     
     handleExerciseInput(newExerciseItem, index);
@@ -66,9 +61,8 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
         title='Add Another Set'
         onPress={ () => {
           const newExerciseItem: ExerciseItem = {
-            date,
             title,
-            data: sets.concat({}),
+            sets: sets.concat({}),
           };
 
           handleExerciseInput(newExerciseItem, index);

@@ -4,8 +4,7 @@ import type { AddOrEditEntryScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
-import { ExerciseItem } from './types';
-import { ExerciseInput } from '../components/ExerciseInput';
+import { ExerciseInput, ExerciseItem } from '../components/ExerciseInput';
 import { Accordion } from '../components/Accordion';
 
 export type Entry = {
@@ -61,7 +60,6 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
               item={    
                 <ExerciseInput
                   index={ index }
-                  date={ date }
                   exerciseItem={ exerciseItem ?? undefined }
                   handleExerciseInput={ handleExerciseInput }
                 />
