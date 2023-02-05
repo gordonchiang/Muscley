@@ -10,7 +10,7 @@ import { Accordion } from '../components/Accordion';
 export type Entry = {
   date: string;
   key: string;
-  title?: string;
+  title: string;
 }
 
 export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {

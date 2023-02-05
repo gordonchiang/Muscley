@@ -29,7 +29,7 @@ export const AgendaListEntry = memo(
 
     return (
       <View>
-        <Text>{ entry.title || 'Untitled' }</Text>
+        <Text>{ entry.title }</Text>
         <Button
           title='View Entry'
           onPress={ () => navigation.navigate('AddOrEditEntry', { date, existingEntry: { entry, index } }) }
