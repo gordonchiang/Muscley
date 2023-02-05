@@ -7,7 +7,7 @@ import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
 import { AgendaListEntry } from '../components/AgendaListEntry';
 import type { Entry } from './AddOrEditEntryScreen';
 import { AgendaListItems, selectedDateStateToAgendaListItem } from '../api/calendar';
-import { dateObjectToDateString } from '../utils/dateFunctions';
+import { dateObjectToString } from '../utils/dateFunctions';
 
 const SELECTED_DATE_MARKING_PROPS = {
   selected: true,
@@ -17,7 +17,7 @@ const SELECTED_DATE_MARKING_PROPS = {
 
 export const CalendarScreen = (props: CalendarScreenProps) => {
   const { navigation, route: { params: { date } = {} } } = props;
-  const initialDate: string = date ?? dateObjectToDateString(new Date());
+  const initialDate: string = date ?? dateObjectToString(new Date());
 
   const [ selectedDate, selectDate ] = useState<string>(initialDate);
   const [ markedDates, changeMarkedDates ] = useState<Record<string, typeof SELECTED_DATE_MARKING_PROPS>>({ [initialDate]: SELECTED_DATE_MARKING_PROPS });
