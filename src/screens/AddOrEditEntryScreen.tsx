@@ -59,9 +59,8 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
               expandedByDefault={ !exerciseItem }
               item={    
                 <ExerciseInput
-                  index={ index }
                   exerciseItem={ exerciseItem ?? undefined }
-                  handleExerciseInput={ handleExerciseInput }
+                  handleExerciseInput={ (exerciseItem: ExerciseItem) => handleExerciseInput(exerciseItem, index) }
                 />
               }
             />

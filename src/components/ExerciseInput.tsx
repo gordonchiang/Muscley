@@ -9,13 +9,12 @@ export type ExerciseItem = {
 
 interface ExerciseInputProps {
   exerciseItem?: ExerciseItem;
-  handleExerciseInput: (arg0: ExerciseItem, index?: number) => void;
-  index: number;
+  handleExerciseInput: (arg0: ExerciseItem) => void;
   plannedSets?: Set[];
 }
 
 export const ExerciseInput = (props: ExerciseInputProps) => {
-  const { exerciseItem, handleExerciseInput, index, plannedSets } = props;
+  const { exerciseItem, handleExerciseInput, plannedSets } = props;
   const title: string = exerciseItem?.title ?? '';
   const sets: Set[] = exerciseItem?.sets ?? [ {} ];
 
@@ -33,7 +32,7 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
       }),
     };
     
-    handleExerciseInput(newExerciseItem, index);
+    handleExerciseInput(newExerciseItem);
   };
 
   const handleExerciseNameInput = (newExerciseName: string) => {
@@ -42,7 +41,7 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
       sets,
     };
     
-    handleExerciseInput(newExerciseItem, index);
+    handleExerciseInput(newExerciseItem);
   };
 
   return (
@@ -65,7 +64,7 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
             sets: sets.concat({}),
           };
 
-          handleExerciseInput(newExerciseItem, index);
+          handleExerciseInput(newExerciseItem);
         } }
       />
     </View>
