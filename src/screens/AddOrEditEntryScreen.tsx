@@ -74,7 +74,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
       <Button
         title={ `${entry ? 'Edit' : 'Add'} Entry` }
         onPress={ async () => {
-          const data = [ ...existingEntriesOnSameDate || [] ];
+          const data = [ ...existingEntriesOnSameDate ?? [] ];
 
           const newEntry: Entry = {
             date,
