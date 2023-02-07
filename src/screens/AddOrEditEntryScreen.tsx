@@ -18,7 +18,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
 
   const [ entryTitle, setEntryTitle ] = useState<string>(entry?.title ?? '');
   const [ exerciseItems, setExerciseItems ] = useState<(ExerciseItem | null)[]>([]);
-  const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.data as Entry[] | null);
+  const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.entries as Entry[] | null);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
           index !== undefined ? data[index] = newEntry : data.push(newEntry);
 
           try {
-            await dispatch(saveDataForSelectedDate({ date, data }));
+            await dispatch(saveDataForSelectedDate({ date, entries: data }));
             await saveToLocalStorage(newEntry.key, exerciseItems);
           } catch(e) {
             // eslint-disable-next-line no-console

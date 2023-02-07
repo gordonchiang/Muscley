@@ -6,10 +6,10 @@ export type AgendaListItems<T> = [ {
 } ];
 
 export function selectedDateStateToAgendaListItem<T>(item: SelectedDateState): AgendaListItems<T> {
-  const { date, data } = item;
+  const { date, entries } = item;
 
   return [ {
     title: date,
-    data: data ? data as T : [ {} ],
+    data: entries ? entries as T : [ {} ],
   } ];
 }

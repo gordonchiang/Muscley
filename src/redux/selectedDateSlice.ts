@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { dateObjectToString } from '../utils/date';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
+import { Entry } from '../screens/AddOrEditEntryScreen';
 
 export interface SelectedDateState {
   date: string;
-  data?: unknown;
+  entries?: Entry[];
 }
 
 const addSelectedDatePrefix = (date: string): string => `selectedDate_${date}`;
@@ -12,20 +13,21 @@ const addSelectedDatePrefix = (date: string): string => `selectedDate_${date}`;
 export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
   'selectedDate/dataFetchStatus',
   async (date: string) => {
-    return { date, data: await getFromLocalStorage(addSelectedDatePrefix(date)) };
+    const data = await getFromLocalStorage(addSelectedDatePrefix(date));
+    return data ? { date, entries: data as Entry[] } : { date };
   }
 );
 
-export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { date: string; data?: unknown }>(
+export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { date: string; entries?: Entry[] }>(
   'selectedDate/dataSaveStatus',
   async (arg) => {
-    const { date, data } = arg;
+    const { date, entries } = arg;
 
-    if (!data) return { date };
+    if (!entries) return { date };
 
     try {
-      await saveToLocalStorage(addSelectedDatePrefix(date), data);
-      return { date, data };
+      await saveToLocalStorage(addSelectedDatePrefix(date), entries);
+      return { date, entries };
     } catch (e) {
       return { date };
     }
@@ -41,19 +43,19 @@ export const selectedDateSlice = createSlice({
   initialState,
   reducers: {
     selectDate: (_, action: PayloadAction<SelectedDateState>) => {
-      const { payload: { date, data } } = action;
-      return { date, data };
+      const { payload: { date, entries } } = action;
+      return { date, entries };
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDataForSelectedDate.fulfilled, (_, action: PayloadAction<SelectedDateState>) => {
-        const { payload: { date, data } } = action;
-        return { date, data };
+        const { payload: { date, entries } } = action;
+        return { date, entries };
       })
       .addCase(saveDataForSelectedDate.fulfilled, (_, action: PayloadAction<SelectedDateState>) => {
-        const { payload: { date, data } } = action;
-        return { date, data };
+        const { payload: { date, entries } } = action;
+        return { date, entries };
       });
   },
 });
