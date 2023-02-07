@@ -20,7 +20,6 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
   const initialDate: string = date ?? dateObjectToString(new Date());
 
   const [ selectedDate, selectDate ] = useState<string>(initialDate);
-  const [ markedDates, changeMarkedDates ] = useState<Record<string, typeof SELECTED_DATE_MARKING_PROPS>>({ [initialDate]: SELECTED_DATE_MARKING_PROPS });
   const items: AgendaListItems<Entry[]> = useAppSelector(({ selectedDate }) => selectedDateStateToAgendaListItem<Entry[]>(selectedDate));
   const dispatch = useAppDispatch();
 
@@ -32,16 +31,12 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
     getItems();
   }, [ dispatch, selectedDate ]);
 
-  const onDayPress = useCallback(({ dateString: date }: DateData) => {
-    selectDate(date);
-    changeMarkedDates({ [date]: SELECTED_DATE_MARKING_PROPS });    
-  }, []);
+  const onDayPress = useCallback(({ dateString: date }: DateData) => selectDate(date), []);
 
   const onDateChanged = useCallback((date: string, updateSource: string) => {
     if (updateSource !== 'todayPress') return;
     
     selectDate(date);
-    changeMarkedDates({ [date]: SELECTED_DATE_MARKING_PROPS });    
   }, []);
 
   const renderItem = useCallback((itemInfo: SectionListRenderItemInfo<Entry | Record<string, never>>) => {
@@ -67,7 +62,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
             selectedDayBackgroundColor: '#FFFFFF',
             selectedDayTextColor: '#000000',
           } }
-          markedDates={ markedDates }
+          markedDates={ { [ selectedDate ]: SELECTED_DATE_MARKING_PROPS } }
         />
         <AgendaList
           sections={ items }
