@@ -31,7 +31,7 @@ export const CalendarScreen = (props: CalendarScreenProps) => {
     getItems();
   }, [ dispatch, selectedDate ]);
 
-  const onDayPress = useCallback(({ dateString: date }: DateData) => selectDate(date), []);
+  const onDayPress = useCallback(({ dateString }: DateData) => selectDate(dateString), []);
 
   const onDateChanged = useCallback((date: string, updateSource: string) => {
     if (updateSource !== 'todayPress') return;
