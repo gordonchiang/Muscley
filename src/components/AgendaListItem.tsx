@@ -5,21 +5,21 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import type { CalendarStackParamList } from '../navigation/types';
 import type { Entry } from '../screens/AddOrEditEntryScreen';
 
-const isEmptyEntry = (entry: Entry | Record<string, never>): entry is Record<string, never> => Object.keys(entry).length === 0;
+const isEmptyItem = (item: object): item is Record<string, never> => Object.keys(item).length === 0;
 
-interface AgendaListEntryProps {
+interface AgendaListItemProps {
   index: number;
-  entry: Entry | Record<string, never>;
+  item: Entry | Record<string, never>;
   date: string;
 }
 
-export const AgendaListEntry = memo(
-  function AgendaListItem(props: AgendaListEntryProps) {
-    const { index, entry, date } = props;
+export const AgendaListItem = memo(
+  function AgendaListItem(props: AgendaListItemProps) {
+    const { index, item: entry, date } = props;
 
     const navigation = useNavigation<StackNavigationProp<CalendarStackParamList>>();
 
-    if (isEmptyEntry(entry)) {
+    if (isEmptyItem(entry)) {
       return (
         <View>
           <Text>No entries for this date</Text>
