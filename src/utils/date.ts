@@ -1,7 +1,7 @@
 /**
- * Converts a date object into YYYY-MM-DD string format.
+ * Converts a date object into an ISO 8601-formatted string (YYYY-MM-DD).
  * @param {Date} date A date object.
- * @returns {string} The local date formatted as a YYYY-MM-DD string. 
+ * @returns {string} The local date as an ISO 8601-formatted string (YYYY-MM-DD). 
  **/
 export const dateObjectToString = (date: Date): string => {
   const year: string = date.getFullYear().toString();
