@@ -8,16 +8,15 @@ export type ExerciseItem = {
 
 interface ExerciseInputProps {
   exerciseItem?: ExerciseItem;
-  handleExerciseInput: (arg0: ExerciseItem) => void;
-  plannedSets?: Set[];
+  handleExerciseInput: (arg0: ExerciseItem, arg1?: number) => void;
 }
 
 export const ExerciseInput = (props: ExerciseInputProps) => {
-  const { exerciseItem, handleExerciseInput, plannedSets } = props;
+  const { exerciseItem, handleExerciseInput } = props;
   const title: string = exerciseItem?.title ?? '';
   const sets: Set[] = exerciseItem?.sets ?? [ {} ];
 
-  const handleSetsInput = ({ weight, reps }: Set, i: number) => {
+  const handleSetInput = ({ weight, reps }: Set, i: number) => {
     const newExerciseItem: ExerciseItem = {
       title,
       sets: sets.map((set, j) => {
@@ -55,9 +54,9 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
           return (
             <SetInput
               key={ index }
-              handleSetInput={ (set: Set) => handleSetsInput(set, index) }
+              handleSetInput={ (set: Set) => handleSetInput(set, index) }
               initialValues={ { weight: set.weight, reps: set.reps } }
-              placeholders={ { weight: plannedSets?.[index]?.weight, reps: plannedSets?.[index]?.reps } }
+              // placeholders={ { weight: plannedSets?.[index]?.weight, reps: plannedSets?.[index]?.reps } }
             />
           );
         })
