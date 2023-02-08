@@ -16,7 +16,7 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
   const title: string = exerciseItem?.title ?? '';
   const sets: Set[] = exerciseItem?.sets ?? [ {} ];
 
-  const handleSetInput = ({ weight, reps }: Set, i: number) => {
+  const handleSetInput = ({ weight, repetitions }: Set, i: number) => {
     const newExerciseItem: ExerciseItem = {
       title,
       sets: sets.map((set, j) => {
@@ -25,7 +25,7 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
           : {
             ...set,
             ...(weight && { weight }),
-            ...(reps && { reps }),
+            ...(repetitions && { repetitions }),
           };
       }),
     };
@@ -55,8 +55,7 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
             <SetInput
               key={ index }
               handleSetInput={ (set: Set) => handleSetInput(set, index) }
-              initialValues={ { weight: set.weight, reps: set.reps } }
-              // placeholders={ { weight: plannedSets?.[index]?.weight, reps: plannedSets?.[index]?.reps } }
+              set={ { weight: set.weight, repetitions: set.repetitions } }
             />
           );
         })

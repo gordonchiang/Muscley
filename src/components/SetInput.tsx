@@ -3,31 +3,32 @@ import { DigitInput } from './DigitInput';
 
 export type Set = {
   weight?: string;
-  reps?: string;
+  repetitions?: string;
+  targetWeight?: string;
+  targetRepetitions?: string;
 };
 
 interface SetInputProps {
   handleSetInput: (arg0: Set) => void;
-  initialValues?: Set;
-  placeholders?: Set;
+  set?: Set;
 }
 
 export const SetInput = (props: SetInputProps) => {
-  const { handleSetInput, initialValues, placeholders } = props;
+  const { handleSetInput, set } = props;
 
   return (
     <View style={ styles.container }>
       <Text>Weight: </Text>
       <DigitInput
         handleDigitInput={ weight => handleSetInput({ weight }) }
-        initialValue={ initialValues?.weight }
-        placeholder={ placeholders?.weight }
+        initialValue={ set?.weight }
+        placeholder={ set?.targetWeight }
       />
       <Text> Rep: </Text>
       <DigitInput
-        handleDigitInput={ reps => handleSetInput({ reps }) }
-        initialValue={ initialValues?.reps }
-        placeholder={ placeholders?.reps }
+        handleDigitInput={ repetitions => handleSetInput({ repetitions }) }
+        initialValue={ set?.repetitions }
+        placeholder={ set?.targetRepetitions }
       />
     </View>
   );
