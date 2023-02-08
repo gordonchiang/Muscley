@@ -1,6 +1,5 @@
 import { Button, TextInput, View } from 'react-native';
-import { ExerciseSetsInput }from '../components/ExerciseSetsInput';
-import type { Set } from '../components/SetInput';
+import { Set, SetInput } from '../components/SetInput';
 
 export type ExerciseItem = {
   title: string;
@@ -51,11 +50,18 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
         style={ { borderWidth: 1 } }
         value={ title }
       />
-      <ExerciseSetsInput
-        sets={ sets }
-        handleSetsInput={ handleSetsInput }
-        plannedSets={ plannedSets }
-      />
+      {
+        sets.map((set, index) => {
+          return (
+            <SetInput
+              key={ index }
+              handleSetInput={ (set: Set) => handleSetsInput(set, index) }
+              initialValues={ { weight: set.weight, reps: set.reps } }
+              placeholders={ { weight: plannedSets?.[index]?.weight, reps: plannedSets?.[index]?.reps } }
+            />
+          );
+        })
+      }
       <Button
         title='Add Another Set'
         onPress={ () => {
