@@ -1,13 +1,13 @@
 import { Dialog as RNEDialog } from '@rneui/themed';
 
 interface DialogProps {
+  children: React.ReactNode;
   isVisible: boolean;
   toggleVisibility: (arg0: boolean) => void;
-  children: React.ReactNode;
 }
 
 export const Dialog = (props: DialogProps) => {
-  const { isVisible, toggleVisibility, children } = props;
+  const { children, isVisible, toggleVisibility } = props;
 
   return (
     <RNEDialog

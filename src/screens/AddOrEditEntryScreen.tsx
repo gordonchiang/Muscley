@@ -139,13 +139,12 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
               key={ index }
               label={ exerciseItem?.title ?? '' }
               expandedByDefault={ !exerciseItem }
-              item={    
-                <ExerciseInput
-                  exerciseItem={ exerciseItem ?? undefined }
-                  handleExerciseInput={ (exerciseItem: ExerciseItem) => handleExerciseInput(exerciseItem, index) }
-                />
-              }
-            />
+            >
+              <ExerciseInput
+                exerciseItem={ exerciseItem ?? undefined }
+                handleExerciseInput={ (exerciseItem: ExerciseItem) => handleExerciseInput(exerciseItem, index) }
+              />
+            </Accordion>
           );
         })
       }

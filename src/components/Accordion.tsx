@@ -1,14 +1,14 @@
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { ListItem } from '@rneui/themed';
 
 interface AccordionProps {
+  children: React.ReactNode;
   label: string;
-  item: ReactElement | ReactElement[];
   expandedByDefault?: boolean;
 }
 
 export const Accordion = (props: AccordionProps) => {
-  const { label, item, expandedByDefault = false } = props;
+  const { children, label, expandedByDefault = false } = props;
 
   const [ expanded, setExpanded ] = useState<boolean>(expandedByDefault);
 
@@ -24,9 +24,7 @@ export const Accordion = (props: AccordionProps) => {
       isExpanded={ expanded }
       onPress={ () => setExpanded(!expanded) }
     >
-      {
-        item
-      }
+      { children }
     </ListItem.Accordion>
   );
 };
