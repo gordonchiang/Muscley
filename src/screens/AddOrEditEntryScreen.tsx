@@ -6,6 +6,7 @@ import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { ExerciseInput, ExerciseItem } from '../components/ExerciseInput';
 import { Accordion } from '../components/Accordion';
+import { Dialog } from '../components/Dialog';
 
 export type Entry = {
   date: string;
@@ -18,6 +19,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
 
   const [ entryTitle, setEntryTitle ] = useState<string>(entry?.title ?? '');
   const [ exerciseItems, setExerciseItems ] = useState<(ExerciseItem | null)[]>([]);
+  const [ optionsDialogVisible, setOptionsDialogVisible ] = useState<boolean>(false);
   const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.entries as Entry[] | null);
   const dispatch = useAppDispatch();
 
@@ -43,12 +45,31 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
 
   return (
     <View>
-      <Text>Edit Entry Screen</Text>
+      <Button
+        title='Options'
+        onPress={ () => setOptionsDialogVisible(!optionsDialogVisible) }
+      />
+      <Dialog
+        isVisible={ optionsDialogVisible }
+        toggleVisibility={ (visibility: boolean) => setOptionsDialogVisible(visibility) }
+      >
+        <View>
+          <Button
+            title='Copy Entry To Date'
+            onPress={ () => null }
+          />
+          <Button
+            title='Close Options'
+            onPress={ () => setOptionsDialogVisible(!optionsDialogVisible) }
+          />
+        </View>
+      </Dialog>
       <Text>{ date }</Text>
       <TextInput
         onChangeText={ setEntryTitle }
         style={ { borderWidth: 1 } }
         value={ entryTitle }
+        placeholder='Entry Name'
       />
       {
         exerciseItems.length > 0 && exerciseItems.map((exerciseItem: ExerciseItem | null, index: number) => {
