@@ -55,7 +55,12 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
             <SetInput
               key={ index }
               handleSetInput={ (set: Set) => handleSetInput(set, index) }
-              set={ { weight: set.weight, repetitions: set.repetitions } }
+              set={ {
+                weight: set.weight,
+                repetitions: set.repetitions,
+                targetWeight: set.targetWeight,
+                targetRepetitions: set.targetRepetitions,
+              } }
             />
           );
         })
