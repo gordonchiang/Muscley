@@ -37,3 +37,12 @@ export const getFromLocalStorage = async (key: string): Promise<unknown> => {
     throw e;
   }
 };
+
+export const deleteFromLocalStorage = async (key: string): Promise<void> => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {
+    console.log(`Error deleting data for key ${key}`, e);
+    throw e;
+  }
+};

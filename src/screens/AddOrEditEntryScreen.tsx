@@ -3,7 +3,7 @@ import { Alert, Button, Text, TextInput, View } from 'react-native';
 import { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import type { AddOrEditEntryScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { addSelectedDatePrefix, saveDataForSelectedDate } from '../redux/selectedDateSlice';
+import { addSelectedDatePrefix, deleteDataForSelectedDate, saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { ExerciseInput, ExerciseItem } from '../components/ExerciseInput';
 import { Accordion } from '../components/Accordion';
@@ -91,6 +91,12 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
     setOptionsDialogVisible(!optionsDialogVisible);
   };
 
+  const onPressDelete = async () => {
+    if (!entry || index === undefined) return;
+    await dispatch(deleteDataForSelectedDate({ date, entry, index }));
+    navigation.goBack();
+  };
+
   const showDatePicker = async () => {
     DateTimePickerAndroid.open({
       value: dateStringToObject(date),
@@ -112,6 +118,26 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
           <Button
             title='Copy Entry To Date'
             onPress={ showDatePicker }
+          />
+          <Button
+            title='Delete Entry'
+            onPress={ () => Alert.alert(
+              'Delete',
+              'Are you sure you want to delete this entry?',
+              [
+                {
+                  text: 'No',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Yes',
+                  onPress: onPressDelete,
+                  style: 'destructive',
+                },
+              ],
+              { cancelable: true }
+            ) }
+            disabled={ !entry }
           />
           <Button
             title='Close Options'

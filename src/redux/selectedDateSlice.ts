@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { dateObjectToString } from '../utils/date';
-import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
+import { deleteFromLocalStorage, getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { Entry } from '../screens/AddOrEditEntryScreen';
 
 export interface SelectedDateState {
@@ -34,6 +35,34 @@ export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { dat
   }
 );
 
+export const deleteDataForSelectedDate = createAsyncThunk<SelectedDateState, { date: string; entry: Entry, index: number }>(
+  'selectedDate/dataDeleteStatus',
+  async (arg) => {
+    const { date, entry: { key }, index } = arg;
+
+    try {
+      const entries = await getFromLocalStorage(addSelectedDatePrefix(date)) as Entry[];
+      console.log(entries);
+      entries.splice(index, 1);
+
+      console.log(entries);
+      await deleteFromLocalStorage(key);
+      console.log(key);
+
+      if (entries.length === 0) {
+        await deleteFromLocalStorage(addSelectedDatePrefix(date));        
+        return { date };
+      }
+
+      await saveToLocalStorage(addSelectedDatePrefix(date), entries);
+      return { date, entries };
+    } catch (e) {
+      console.log(e);
+      return { date };
+    }
+  }
+);
+
 const initialState: SelectedDateState = {
   date: dateObjectToString(new Date()),
 };
@@ -54,6 +83,10 @@ export const selectedDateSlice = createSlice({
         return { date, entries };
       })
       .addCase(saveDataForSelectedDate.fulfilled, (_, action: PayloadAction<SelectedDateState>) => {
+        const { payload: { date, entries } } = action;
+        return { date, entries };
+      })
+      .addCase(deleteDataForSelectedDate.fulfilled, (_, action: PayloadAction<SelectedDateState>) => {
         const { payload: { date, entries } } = action;
         return { date, entries };
       });
