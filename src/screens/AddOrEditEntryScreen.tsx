@@ -3,7 +3,7 @@ import { Alert, Button, Text, TextInput, View } from 'react-native';
 import { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import type { AddOrEditEntryScreenProps } from '../navigation/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { saveDataForSelectedDate } from '../redux/selectedDateSlice';
+import { addSelectedDatePrefix, saveDataForSelectedDate } from '../redux/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { ExerciseInput, ExerciseItem } from '../components/ExerciseInput';
 import { Accordion } from '../components/Accordion';
@@ -46,37 +46,33 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
     setExerciseItems(updatedExerciseItems);
   };
 
+  const replaceWithTargets = ({ weight, repetitions }: Set): Set => { return { targetWeight: weight, targetRepetitions: repetitions }; };
+
   const copyEntryToDate = async (title: string, newDate: string, exerciseItems: (ExerciseItem | null)[]): Promise<void> => {
-    const existingEntriesOnSameDate = await getFromLocalStorage(`selectedDate_${newDate}`) as Entry[] | null;
-    const data: Entry[] = existingEntriesOnSameDate || [];
+    const existingEntriesOnSameDate = await getFromLocalStorage(addSelectedDatePrefix(newDate)) as Entry[] | null ?? [];
 
     const newEntry: Entry = {
       date: newDate,
-      key: `${newDate}_entry${data.length}_data`,
+      key: `${newDate}_entry${existingEntriesOnSameDate.length}_data`,
       title,
     };
 
-    data.push(newEntry);
+    existingEntriesOnSameDate.push(newEntry);
 
     const plannedExerciseItems = exerciseItems.map((exerciseItem: ExerciseItem | null) => {
       if (!exerciseItem) return null;
 
       const { sets, title } = exerciseItem;
 
-      const plannedSets: Set[] = sets?.map((set: Set) => {
-        return {
-          targetWeight: set.weight ?? set.targetWeight,
-          targetRepetitions: set.repetitions ?? set.targetRepetitions,
-        };
-      }) ?? [];
+      const plannedSets: Set[] = sets?.map((set: Set) => replaceWithTargets(set)) ?? [];
 
       return { sets: plannedSets, title };
     });
 
     try {
       date === newDate
-        ? await dispatch(saveDataForSelectedDate({ date: newDate, entries: data }))
-        : await saveToLocalStorage(`selectedDate_${newDate}`, data);
+        ? await dispatch(saveDataForSelectedDate({ date: newDate, entries: existingEntriesOnSameDate }))
+        : await saveToLocalStorage(addSelectedDatePrefix(newDate), existingEntriesOnSameDate);
       
       await saveToLocalStorage(newEntry.key, plannedExerciseItems);
     } catch(e) {
@@ -85,12 +81,10 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
     }
   };
 
-  const onPickDate = async (_: DateTimePickerEvent, date?: Date): Promise<void> => {
-    if (!date) return;
+  const onPickDate = async (event: DateTimePickerEvent, date?: Date): Promise<void> => {
+    if (event.type === 'dismissed' || !date) return;
 
-    const newDate: string = dateObjectToString(date);
-
-    await copyEntryToDate(entryTitle, newDate, exerciseItems);
+    await copyEntryToDate(entryTitle, dateObjectToString(date), exerciseItems);
 
     Alert.alert('Success!');
 

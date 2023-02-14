@@ -8,7 +8,7 @@ export interface SelectedDateState {
   entries?: Entry[];
 }
 
-const addSelectedDatePrefix = (date: string): string => `selectedDate_${date}`;
+export const addSelectedDatePrefix = (date: string): string => `selectedDate_${date}`;
 
 export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, string>(
   'selectedDate/dataFetchStatus',
