@@ -164,6 +164,14 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
                 exerciseItem={ exerciseItem ?? undefined }
                 handleExerciseInput={ (exerciseItem: ExerciseItem) => handleExerciseInput(exerciseItem, index) }
               />
+              <Button
+                title='Delete Exercise'
+                onPress={ () => {
+                  const updatedExerciseItems = [ ...exerciseItems ];
+                  updatedExerciseItems.splice(index, 1);
+                  setExerciseItems(updatedExerciseItems);
+                } }
+              />
             </Accordion>
           );
         })
