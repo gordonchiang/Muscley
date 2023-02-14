@@ -52,16 +52,31 @@ export const ExerciseInput = (props: ExerciseInputProps) => {
       {
         sets.map((set, index) => {
           return (
-            <SetInput
-              key={ index }
-              handleSetInput={ (set: Set) => handleSetInput(set, index) }
-              set={ {
-                weight: set.weight,
-                repetitions: set.repetitions,
-                targetWeight: set.targetWeight,
-                targetRepetitions: set.targetRepetitions,
-              } }
-            />
+            <View key={ index } style={ { flexDirection: 'row', justifyContent: 'space-around' } }>
+              <SetInput
+                handleSetInput={ (set: Set) => handleSetInput(set, index) }
+                set={ {
+                  weight: set.weight,
+                  repetitions: set.repetitions,
+                  targetWeight: set.targetWeight,
+                  targetRepetitions: set.targetRepetitions,
+                } }
+              />
+              <Button
+                title='Delete Set'
+                onPress={ () => {
+                  const copy = [ ...sets ];
+                  copy.splice(index, 1);
+
+                  const newExerciseItem: ExerciseItem = {
+                    title,
+                    sets: copy,
+                  };
+
+                  handleExerciseInput(newExerciseItem);
+                } }
+              />
+            </View>
           );
         })
       }
