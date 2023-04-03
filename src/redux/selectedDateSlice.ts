@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { dateObjectToString } from '../utils/date';
+import { dateObjectToString } from '../utilities/date';
 import { deleteFromLocalStorage, getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { Entry } from '../screens/AddOrEditEntryScreen';
 

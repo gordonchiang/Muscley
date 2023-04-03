@@ -8,7 +8,7 @@ import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { ExerciseInput, ExerciseItem } from '../components/ExerciseInput';
 import { Accordion } from '../components/Accordion';
 import { Dialog } from '../components/Dialog';
-import { dateObjectToString, dateStringToObject } from '../utils/date';
+import { dateObjectToString, dateStringToObject } from '../utilities/date';
 import type { Set } from '../components/SetInput';
 
 export type Entry = {
