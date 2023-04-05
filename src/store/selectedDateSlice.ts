@@ -6,7 +6,7 @@ import { Entry } from '../screens/AddOrEditEntryScreen';
 
 export interface SelectedDateState {
   date: string;
-  entries?: Entry[];
+  entries: Entry[];
 }
 
 export const addSelectedDatePrefix = (date: string): string => `selectedDate_${date}`;
@@ -15,23 +15,16 @@ export const fetchDataForSelectedDate = createAsyncThunk<SelectedDateState, stri
   'selectedDate/dataFetchStatus',
   async (date: string) => {
     const data = await getFromLocalStorage(addSelectedDatePrefix(date));
-    return data ? { date, entries: data as Entry[] } : { date };
+    return { date, entries: data as Entry[] };
   }
 );
 
-export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { date: string; entries?: Entry[] }>(
+export const saveDataForSelectedDate = createAsyncThunk<SelectedDateState, { date: string; entries: Entry[] }>(
   'selectedDate/dataSaveStatus',
   async (arg) => {
     const { date, entries } = arg;
-
-    if (!entries) return { date };
-
-    try {
-      await saveToLocalStorage(addSelectedDatePrefix(date), entries);
-      return { date, entries };
-    } catch (e) {
-      return { date };
-    }
+    await saveToLocalStorage(addSelectedDatePrefix(date), entries);
+    return { date, entries };
   }
 );
 
@@ -40,31 +33,19 @@ export const deleteDataForSelectedDate = createAsyncThunk<SelectedDateState, { d
   async (arg) => {
     const { date, entry: { key }, index } = arg;
 
-    try {
-      const entries = await getFromLocalStorage(addSelectedDatePrefix(date)) as Entry[];
-      console.log(entries);
-      entries.splice(index, 1);
+    const entries = await getFromLocalStorage(addSelectedDatePrefix(date)) as Entry[];
 
-      console.log(entries);
-      await deleteFromLocalStorage(key);
-      console.log(key);
+    entries.splice(index, 1);
+    await deleteFromLocalStorage(key);
 
-      if (entries.length === 0) {
-        await deleteFromLocalStorage(addSelectedDatePrefix(date));        
-        return { date };
-      }
-
-      await saveToLocalStorage(addSelectedDatePrefix(date), entries);
-      return { date, entries };
-    } catch (e) {
-      console.log(e);
-      return { date };
-    }
+    await saveToLocalStorage(addSelectedDatePrefix(date), entries);
+    return { date, entries };
   }
 );
 
 const initialState: SelectedDateState = {
   date: dateObjectToString(new Date()),
+  entries: [],
 };
 
 export const selectedDateSlice = createSlice({

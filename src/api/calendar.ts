@@ -1,4 +1,4 @@
-import type { SelectedDateState } from '../redux/selectedDateSlice';
+import { SelectedDateState } from '../store/selectedDateSlice';
 
 export type AgendaListItems<T> = [ {
   title: string;

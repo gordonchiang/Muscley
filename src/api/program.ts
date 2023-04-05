@@ -1,5 +1,5 @@
 import { ExerciseItem } from '../components/ExerciseInput';
-import { addSelectedDatePrefix } from '../redux/selectedDateSlice';
+import { addSelectedDatePrefix } from '../store/selectedDateSlice';
 import { Entry } from '../screens/AddOrEditEntryScreen';
 import { dateObjectToString } from '../utilities/date';
 import { getFromLocalStorage, saveToLocalStorage } from './localStorage';
@@ -10,13 +10,19 @@ type ProgramSet = {
   repetitions?: number;
 }
 
+type ProgramLift = {
+  name: string;
+  sets: ProgramSet[];
+};
+
+type Routine = {
+  lifts: number[];
+}[];
+
 export type Program = {
   name: string;
-  lifts: {
-    name: string;
-    sets: ProgramSet[];
-  }[];
-  routine: any;
+  lifts: ProgramLift[];
+  routine: Routine;
 };
 
 export const example: Program = {
@@ -156,35 +162,30 @@ export const example: Program = {
   routine: [
     { lifts: [ 0, 1 ] },
     { lifts: [ 2, 3 ] },
-    { rest: true },
+    { lifts: [] },
   ],
 };
 
 export function loadTrainingProgram(program: Program): void {
-  loadTrainingDays(program, new Date());
+  loadSchedule(program, new Date());
 }
 
-function loadTrainingDays(program: Program, startDate: Date): void {
-  const days = program.routine.map((day: any) => {
-    return day.lifts
-      ? mapLiftIndicesToLifts(day.lifts, program.lifts)
-      : [];
-  });
-
-  days.forEach((day: any, index: number) => {
+function loadSchedule(program: Program, startDate: Date): void {
+  program.routine.forEach(({ lifts }: { lifts: number[] }, index: number): void => {
+    const programmedLiftsForDate: ProgramLift[] = mapLiftIndicesToLifts(lifts, program.lifts);
     const date: Date = new Date();
     date.setDate(startDate.getDate() + index);
-    copyEntryToDate(program.name, dateObjectToString(date), day);
+    copyEntryToDate(program.name, dateObjectToString(date), programmedLiftsForDate);
   });
 }
 
-function mapLiftIndicesToLifts(liftIndices: number[], lifts: any[]) {
+function mapLiftIndicesToLifts(liftIndices: number[], lifts: ProgramLift[]): ProgramLift[] {
   return liftIndices.map((index: number) => lifts[index]);
 }
 
-const replaceWithTargets = ({ weight, repetitions }: Set): Set => { return { targetWeight: weight?.toString(), targetRepetitions: repetitions?.toString() }; };
+const replaceWithTargets = ({ weight, repetitions }: ProgramSet): Set => { return { targetWeight: weight?.toString(), targetRepetitions: repetitions?.toString() }; };
 
-const copyEntryToDate = async (title: string, newDate: string, exerciseItems: ExerciseItem[]): Promise<void> => {
+const copyEntryToDate = async (title: string, newDate: string, programLifts: ProgramLift[]): Promise<void> => {
   const existingEntriesOnSameDate = (await getFromLocalStorage(addSelectedDatePrefix(newDate)) ?? []) as Entry[];
 
   const newEntry: Entry = {
@@ -195,12 +196,12 @@ const copyEntryToDate = async (title: string, newDate: string, exerciseItems: Ex
 
   existingEntriesOnSameDate.push(newEntry);
 
-  const plannedExerciseItems = exerciseItems.map((exerciseItem: ExerciseItem | null) => {
-    if (!exerciseItem) return null;
+  const plannedExerciseItems: (ExerciseItem | null)[] = programLifts.map((programLift: ProgramLift) => {
+    if (!programLift) return null;
 
-    const { sets, title } = exerciseItem;
+    const { sets, name: title } = programLift;
 
-    const plannedSets: Set[] = sets?.map((set: Set) => replaceWithTargets(set)) ?? [];
+    const plannedSets: Set[] = sets?.map((set: ProgramSet): Set => replaceWithTargets(set)) ?? [];
 
     return { sets: plannedSets, title };
   });
