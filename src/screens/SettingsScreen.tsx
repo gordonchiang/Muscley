@@ -1,8 +1,10 @@
 import { Button, View } from 'react-native';
 import { clearLocalStorage, getAllKeysFromLocalStorage } from '../api/localStorage';
-import { example, loadTrainingProgram } from '../api/program';
+import { SettingsScreenProps } from '../navigation/types';
 
-export const SettingsScreen = () => {
+export const SettingsScreen = (props: SettingsScreenProps) => {
+  const { navigation } = props;
+
   return (
     <View>
       <Button
@@ -16,7 +18,7 @@ export const SettingsScreen = () => {
       />
       <Button
         title='Import training program'
-        onPress={ () => loadTrainingProgram(example) }
+        onPress={ () => navigation.navigate('Onboarding') }
       />
     </View>
   );

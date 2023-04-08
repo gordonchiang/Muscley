@@ -6,7 +6,8 @@ import { getFromLocalStorage, saveToLocalStorage } from './localStorage';
 import { Set } from '../components/SetInput';
 
 type ProgramSet = {
-  weight?: string;
+  weight?: number;
+  weightMultiplier?: number;
   repetitions?: number;
 }
 
@@ -23,6 +24,10 @@ export type Program = {
   name: string;
   lifts: ProgramLift[];
   routine: Routine;
+  onboarding: {
+    mode: string;
+    lifts: number[];
+  };
 };
 
 export const example: Program = {
@@ -31,15 +36,15 @@ export const example: Program = {
     {
       name: 'Bench Press',
       sets: [
-        { repetitions: 8 },
-        { repetitions: 6 },
-        { repetitions: 4 },
-        { repetitions: 4 },
-        { repetitions: 4 },
-        { repetitions: 5 },
-        { repetitions: 6 },
-        { repetitions: 7 },
-        { repetitions: 8 },
+        { repetitions: 8, weightMultiplier: 0.65 },
+        { repetitions: 6, weightMultiplier: 0.75 },
+        { repetitions: 4, weightMultiplier: 0.85 },
+        { repetitions: 4, weightMultiplier: 0.85 },
+        { repetitions: 4, weightMultiplier: 0.85 },
+        { repetitions: 5, weightMultiplier: 0.8 },
+        { repetitions: 6, weightMultiplier: 0.75 },
+        { repetitions: 7, weightMultiplier: 0.7 },
+        { repetitions: 8, weightMultiplier: 0.65 },
       ],
     },
     {
@@ -164,13 +169,27 @@ export const example: Program = {
     { lifts: [ 2, 3 ] },
     { lifts: [] },
   ],
+  onboarding: {
+    mode: 'oneRepititionMax',
+    lifts: [ 0, 1, 2, 6 ],
+  },
 };
 
-export function loadTrainingProgram(program: Program): void {
-  loadSchedule(program, new Date());
+export function addWeightToProgramLifts(program: Program, trainingMaxes: Record<string, number>): Program {
+  const updatedProgram: Program = { ...program }; // should deep clone
+  
+  updatedProgram.lifts.forEach((lift: ProgramLift) => {
+    lift.sets.forEach((set: ProgramSet) => {
+      if (Object.keys(trainingMaxes).includes(lift.name) && set.weightMultiplier) {
+        set.weight = trainingMaxes[lift.name] * set.weightMultiplier;
+      } 
+    });
+  });
+
+  return updatedProgram;
 }
 
-function loadSchedule(program: Program, startDate: Date): void {
+export function loadSchedule(program: Program, startDate: Date): void {
   program.routine.forEach(({ lifts }: { lifts: number[] }, index: number): void => {
     const programmedLiftsForDate: ProgramLift[] = mapLiftIndicesToLifts(lifts, program.lifts);
     const date: Date = new Date();
@@ -217,3 +236,14 @@ const copyEntryToDate = async (title: string, newDate: string, programLifts: Pro
     console.log('Error in AddOrEditEntryScreen', e);
   }
 };
+
+export function onboardProgram(program: Program) {
+  const { onboarding: { mode, lifts: liftIndices }, lifts } = program;
+
+  if (mode === 'oneRepititionMax') {
+    const mappedLiftNames = liftIndices.map((liftIndex: number) => lifts[liftIndex].name);
+    return mappedLiftNames;
+  }
+
+  return [];
+}
