@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { Button, SectionListRenderItemInfo, View } from 'react-native';
 import { AgendaList, CalendarProvider, DateData, ExpandableCalendar } from 'react-native-calendars';
 import type { CalendarScreenProps } from '../navigation/types';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { fetchDataForSelectedDate } from '../redux/selectedDateSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { fetchDataForSelectedDate } from '../store/selectedDateSlice';
 import { AgendaListItem } from '../components/AgendaListItem';
 import type { Entry } from './AddOrEditEntryScreen';
 import { AgendaListItems, selectedDateStateToAgendaListItem } from '../api/calendar';
-import { dateObjectToString } from '../utilities/date';
+import { dateObjectToString } from '../util/date';
 
 const SELECTED_DATE_MARKING_PROPS = {
   selected: true,

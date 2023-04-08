@@ -1,7 +1,7 @@
 import { ExerciseItem } from '../components/ExerciseInput';
 import { addSelectedDatePrefix } from '../store/selectedDateSlice';
 import { Entry } from '../screens/AddOrEditEntryScreen';
-import { dateObjectToString } from '../utilities/date';
+import { dateObjectToString } from '../util/date';
 import { getFromLocalStorage, saveToLocalStorage } from './localStorage';
 import { Set } from '../components/SetInput';
 

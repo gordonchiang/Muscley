@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
-import { store } from './src/redux/store';
+import { store } from './src/store/store';
 import { RootDrawer } from './src/navigation/RootDrawer';
 
 export default function App() {

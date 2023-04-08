@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Alert, Button, Text, TextInput, View } from 'react-native';
 import { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import type { AddOrEditEntryScreenProps } from '../navigation/types';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { addSelectedDatePrefix, deleteDataForSelectedDate, saveDataForSelectedDate } from '../redux/selectedDateSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { addSelectedDatePrefix, deleteDataForSelectedDate, saveDataForSelectedDate } from '../store/selectedDateSlice';
 import { getFromLocalStorage, saveToLocalStorage } from '../api/localStorage';
 import { ExerciseInput, ExerciseItem } from '../components/ExerciseInput';
 import { Accordion } from '../components/Accordion';
 import { Dialog } from '../components/Dialog';
-import { dateObjectToString, dateStringToObject } from '../utilities/date';
+import { dateObjectToString, dateStringToObject } from '../util/date';
 import type { Set } from '../components/SetInput';
 
 export type Entry = {
