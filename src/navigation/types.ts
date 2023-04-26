@@ -24,7 +24,8 @@ export type CalendarScreenProps = StackScreenProps<CalendarStackParamList, 'Cale
 export type AddOrEditEntryScreenProps = StackScreenProps<CalendarStackParamList, 'AddOrEditEntry'>;
 
 export type OnboardingParamList = {
-  InputNaxes: undefined;
+  CalendarStack: { screen: string };
+  InputMaxes: undefined;
 }
 
-export type InputNaxesScreenProps = StackScreenProps<OnboardingParamList, 'InputNaxes'>;
+export type InputMaxesScreenProps = StackScreenProps<OnboardingParamList, 'InputMaxes'>;

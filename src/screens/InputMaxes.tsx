@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Button, Text, View } from 'react-native';
 import { example as program, loadSchedule, onboardProgram, addWeightToProgramLifts } from '../api/program';
 import { DigitInput } from '../components/DigitInput';
-import { InputNaxesScreenProps } from '../navigation/types';
+import { InputMaxesScreenProps } from '../navigation/types';
 
-export const InputNaxes = (props: InputNaxesScreenProps) => {
+export const InputMaxes = (props: InputMaxesScreenProps) => {
   const { navigation } = props;
   
   const liftsToOnboard = onboardProgram(program);
@@ -38,7 +38,7 @@ export const InputNaxes = (props: InputNaxesScreenProps) => {
         onPress={ () => {
           const updatedProgram = addWeightToProgramLifts(program, trainingMaxes);
           loadSchedule(updatedProgram, new Date());
-          console.log('Done loading, go to calendar');
+          navigation.navigate('CalendarStack', { screen: 'Calendar' });
         } }
       />
     </View>
