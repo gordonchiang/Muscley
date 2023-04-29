@@ -9,6 +9,8 @@ type ProgramSet = {
   weight?: number;
   weightMultiplier?: number;
   repetitions?: number;
+  AMRAP?: boolean;
+  progression?: boolean;
 }
 
 type ProgramLift = {
@@ -28,6 +30,11 @@ export type Program = {
     mode: string;
     lifts: number[];
   };
+  progression: {
+    mode: string;
+    lifts: number[];
+    thresholds: { [ key: number ]: number }[];
+  };
 };
 
 export const example: Program = {
@@ -44,7 +51,7 @@ export const example: Program = {
         { repetitions: 5, weightMultiplier: 0.8 },
         { repetitions: 6, weightMultiplier: 0.75 },
         { repetitions: 7, weightMultiplier: 0.7 },
-        { repetitions: 8, weightMultiplier: 0.65 },
+        { repetitions: 8, weightMultiplier: 0.65, AMRAP: true },
       ],
     },
     {
@@ -65,13 +72,13 @@ export const example: Program = {
       sets: [
         { repetitions: 5, weightMultiplier: 0.75 },
         { repetitions: 3, weightMultiplier: 0.85 },
-        { repetitions: 1, weightMultiplier: 0.95 },
+        { repetitions: 1, weightMultiplier: 0.95, AMRAP: true, progression: true },
         { repetitions: 3, weightMultiplier: 0.9 },
         { repetitions: 3, weightMultiplier: 0.85 },
         { repetitions: 3, weightMultiplier: 0.8 },
         { repetitions: 5, weightMultiplier: 0.75 },
         { repetitions: 5, weightMultiplier: 0.7 },
-        { repetitions: 5, weightMultiplier: 0.65 },
+        { repetitions: 5, weightMultiplier: 0.65, AMRAP: true },
       ],
     },
     {
@@ -92,13 +99,13 @@ export const example: Program = {
       sets: [
         { repetitions: 5, weightMultiplier: 0.75 },
         { repetitions: 3, weightMultiplier: 0.85 },
-        { repetitions: 1, weightMultiplier: 0.95 },
+        { repetitions: 1, weightMultiplier: 0.95, AMRAP: true, progression: true },
         { repetitions: 3, weightMultiplier: 0.9 },
         { repetitions: 3, weightMultiplier: 0.85 },
         { repetitions: 3, weightMultiplier: 0.8 },
         { repetitions: 5, weightMultiplier: 0.75 },
         { repetitions: 5, weightMultiplier: 0.7 },
-        { repetitions: 5, weightMultiplier: 0.65 },
+        { repetitions: 5, weightMultiplier: 0.65, AMRAP: true },
       ],
     },
     {
@@ -119,13 +126,13 @@ export const example: Program = {
       sets: [
         { repetitions: 5, weightMultiplier: 0.75 },
         { repetitions: 3, weightMultiplier: 0.85 },
-        { repetitions: 1, weightMultiplier: 0.95 },
+        { repetitions: 1, weightMultiplier: 0.95, AMRAP: true, progression: true },
         { repetitions: 3, weightMultiplier: 0.9 },
         { repetitions: 3, weightMultiplier: 0.85 },
         { repetitions: 3, weightMultiplier: 0.8 },
         { repetitions: 3, weightMultiplier: 0.75 },
         { repetitions: 3, weightMultiplier: 0.7 },
-        { repetitions: 3, weightMultiplier: 0.65 },
+        { repetitions: 3, weightMultiplier: 0.65, AMRAP: true },
       ],
     },
     {
@@ -146,13 +153,13 @@ export const example: Program = {
       sets: [
         { repetitions: 5, weightMultiplier: 0.75 },
         { repetitions: 3, weightMultiplier: 0.85 },
-        { repetitions: 1, weightMultiplier: 0.95 },
+        { repetitions: 1, weightMultiplier: 0.95, AMRAP: true, progression: true },
         { repetitions: 3, weightMultiplier: 0.9 },
         { repetitions: 5, weightMultiplier: 0.85 },
         { repetitions: 3, weightMultiplier: 0.8 },
         { repetitions: 5, weightMultiplier: 0.75 },
         { repetitions: 3, weightMultiplier: 0.7 },
-        { repetitions: 5, weightMultiplier: 0.65 },
+        { repetitions: 5, weightMultiplier: 0.65, AMRAP: true },
       ],
     },
     {
@@ -181,6 +188,28 @@ export const example: Program = {
   onboarding: {
     mode: 'oneRepititionMax',
     lifts: [ 0, 1, 2, 6 ],
+  },
+  progression: {
+    mode: 'AMRAP',
+    lifts: [ 0, 1, 2, 6 ],
+    thresholds: [
+      {
+        0: 0,
+        5: 5,
+      },
+      {
+        0: 0,
+        5: 5,
+      },
+      {
+        0: 0,
+        2: 5,
+      },
+      {
+        0: 0,
+        2: 5,
+      },
+    ],
   },
 };
 
