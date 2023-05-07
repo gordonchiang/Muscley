@@ -15,12 +15,18 @@ export type Entry = {
   date: string;
   key: string;
   title: string;
+  status: 'Complete' | 'Incomplete';
+  program?: {
+    name: string;
+    isLastEntryForCycle?: boolean;
+  };
 }
 
 export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
   const { navigation, route: { params: { date, existingEntry: { entry, index } = {} } } } = props;
 
   const [ entryTitle, setEntryTitle ] = useState<string>(entry?.title ?? '');
+  const [ entryStatus, setEntryStatus ] = useState<'Complete' | 'Incomplete'>(entry?.status ?? 'Incomplete');
   const [ exerciseItems, setExerciseItems ] = useState<(ExerciseItem | null)[]>([]);
   const [ optionsDialogVisible, setOptionsDialogVisible ] = useState<boolean>(false);
   const existingEntriesOnSameDate: Entry[] | null = useAppSelector(({ selectedDate }) => selectedDate.entries as Entry[] | null);
@@ -55,6 +61,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
       date: newDate,
       key: `${newDate}_entry${existingEntriesOnSameDate.length}_data`,
       title,
+      status: 'Incomplete'
     };
 
     existingEntriesOnSameDate.push(newEntry);
@@ -146,6 +153,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
         </View>
       </Dialog>
       <Text>{ date }</Text>
+      <Text>Status: { entryStatus }</Text>
       <TextInput
         onChangeText={ setEntryTitle }
         style={ { borderWidth: 1 } }
@@ -189,6 +197,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
             date,
             key: `${date}_entry${index ?? data.length}_data`,
             title: entryTitle,
+            status: entryStatus,
           };
 
           index !== undefined ? data[index] = newEntry : data.push(newEntry);
@@ -203,6 +212,10 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
 
           navigation.goBack();
         } }
+      />
+      <Button
+        title={ `Mark as ${entryStatus === 'Complete' ? 'Complete' : 'Incomplete'}` }
+        onPress={ () => setEntryStatus(entryStatus === 'Complete' ? 'Incomplete' : 'Complete') }
       />
       <Button
         title='Go Back'

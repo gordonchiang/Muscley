@@ -232,7 +232,10 @@ export function loadSchedule(program: Program, startDate: Date): void {
     const programmedLiftsForDate: ProgramLift[] = mapLiftIndicesToLifts(lifts, program.lifts);
     const date: Date = new Date();
     date.setDate(startDate.getDate() + index);
-    copyEntryToDate(program.name, dateObjectToString(date), programmedLiftsForDate);
+
+    const isLastDayOfRoutine: boolean = program.routine.length === index;
+
+    copyEntryToDate(program.name, dateObjectToString(date), programmedLiftsForDate, isLastDayOfRoutine);
   });
 }
 
@@ -242,13 +245,18 @@ function mapLiftIndicesToLifts(liftIndices: number[], lifts: ProgramLift[]): Pro
 
 const replaceWithTargets = ({ weight, repetitions }: ProgramSet): Set => { return { targetWeight: weight?.toString(), targetRepetitions: repetitions?.toString() }; };
 
-const copyEntryToDate = async (title: string, newDate: string, programLifts: ProgramLift[]): Promise<void> => {
+const copyEntryToDate = async (title: string, newDate: string, programLifts: ProgramLift[], isLastDayOfRoutine = false): Promise<void> => {
   const existingEntriesOnSameDate = (await getFromLocalStorage(addSelectedDatePrefix(newDate)) ?? []) as Entry[];
 
   const newEntry: Entry = {
     date: newDate,
     key: `${newDate}_entry${existingEntriesOnSameDate.length}_data`,
     title,
+    status: 'Incomplete',
+    program: {
+      name: example.name,
+      ...(isLastDayOfRoutine && { isLastEntryForCycle: true }),
+    },
   };
 
   existingEntriesOnSameDate.push(newEntry);
