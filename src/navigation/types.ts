@@ -3,7 +3,7 @@ import { Entry } from '../screens/AddOrEditEntryScreen';
 
 export type RootDrawerParamList = {
   CalendarStack: undefined;
-  Onboarding: undefined;
+  Onboarding: { screen: string };
   Settings: undefined;
 };
 
@@ -18,6 +18,7 @@ export type CalendarStackParamList = {
       index: number;
     };
   };
+  Onboarding: { screen: string };
 }
 
 export type CalendarScreenProps = StackScreenProps<CalendarStackParamList, 'Calendar'>;
@@ -26,6 +27,8 @@ export type AddOrEditEntryScreenProps = StackScreenProps<CalendarStackParamList,
 export type OnboardingParamList = {
   CalendarStack: { screen: string };
   InputMaxes: undefined;
+  ReviewProgress: undefined;
 }
 
 export type InputMaxesScreenProps = StackScreenProps<OnboardingParamList, 'InputMaxes'>;
+export type ReviewProgressScreenProps = StackScreenProps<OnboardingParamList, 'ReviewProgress'>;

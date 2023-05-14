@@ -18,7 +18,7 @@ export const SettingsScreen = (props: SettingsScreenProps) => {
       />
       <Button
         title='Import training program'
-        onPress={ () => navigation.navigate('Onboarding') }
+        onPress={ () => navigation.navigate('Onboarding', { screen: 'InputMaxes' }) }
       />
     </View>
   );

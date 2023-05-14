@@ -198,6 +198,7 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
             key: `${date}_entry${index ?? data.length}_data`,
             title: entryTitle,
             status: entryStatus,
+            program: entry?.program,
           };
 
           index !== undefined ? data[index] = newEntry : data.push(newEntry);
@@ -214,9 +215,15 @@ export const AddOrEditEntryScreen = (props: AddOrEditEntryScreenProps) => {
         } }
       />
       <Button
-        title={ `Mark as ${entryStatus === 'Complete' ? 'Complete' : 'Incomplete'}` }
+        title={ `Mark as ${entryStatus === 'Complete' ? 'Incomplete' : 'Complete'}` }
         onPress={ () => setEntryStatus(entryStatus === 'Complete' ? 'Incomplete' : 'Complete') }
       />
+      {
+        entryStatus === 'Complete' && entry?.program?.isLastEntryForCycle && <Button
+          title={ 'Progress' }
+          onPress={ () => navigation.navigate('Onboarding', { screen: 'ReviewProgress' }) }
+        />
+      }
       <Button
         title='Go Back'
         onPress={ () => navigation.goBack() }

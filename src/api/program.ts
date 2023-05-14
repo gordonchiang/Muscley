@@ -191,7 +191,7 @@ export const example: Program = {
   },
   progression: {
     mode: 'AMRAP',
-    lifts: [ 0, 1, 2, 6 ],
+    lifts: [ 2, 4, 6, 8 ],
     thresholds: [
       {
         0: 0,
@@ -220,7 +220,7 @@ export function addWeightToProgramLifts(program: Program, trainingMaxes: Record<
     lift.sets.forEach((set: ProgramSet) => {
       if (Object.keys(trainingMaxes).includes(lift.name) && set.weightMultiplier) {
         set.weight = trainingMaxes[lift.name] * set.weightMultiplier;
-      } 
+      }
     });
   });
 
@@ -233,7 +233,7 @@ export function loadSchedule(program: Program, startDate: Date): void {
     const date: Date = new Date();
     date.setDate(startDate.getDate() + index);
 
-    const isLastDayOfRoutine: boolean = program.routine.length === index;
+    const isLastDayOfRoutine: boolean = program.routine.length - 1 === index;
 
     copyEntryToDate(program.name, dateObjectToString(date), programmedLiftsForDate, isLastDayOfRoutine);
   });
@@ -289,6 +289,32 @@ export function onboardProgram(program: Program) {
   if (mode === 'oneRepititionMax') {
     const mappedLiftNames = liftIndices.map((liftIndex: number) => lifts[liftIndex].name);
     return mappedLiftNames;
+  }
+
+  return [];
+}
+
+export function reviewProgress(program: Program, exercises: ExerciseItem[][]) {
+  const { progression: { mode, lifts: liftIndices, thresholds }, lifts } = program;
+
+  if (mode === 'AMRAP' && exercises.length) {
+    const mappedLiftNamesToProgress = liftIndices.map((liftIndex: number, i: number) => {
+      const lift = lifts[liftIndex].name;
+      const progressionSetIndex: number = lifts[liftIndex].sets.findIndex(set => set.progression === true);
+
+      const dayOfRoutineIndex: number = program.routine.length - 1 - program.routine.findIndex(routineItem => routineItem.lifts.includes(liftIndex));
+      const liftExercise = exercises[dayOfRoutineIndex].find(item => item.title === lift);
+      const repetitions: number = Number(liftExercise?.sets?.[progressionSetIndex].repetitions) ?? 0;
+
+      let recommendedIncrease = Number(liftExercise?.sets?.[progressionSetIndex].weight ?? liftExercise?.sets?.[progressionSetIndex].targetWeight ?? 0) + (Object.entries(thresholds[i]).reverse().find(threshold => repetitions >= Number(threshold[0]))?.[1] ?? 0);
+      recommendedIncrease = Math.round(recommendedIncrease)
+      return {
+        lift,
+        recommendedIncrease,
+      };
+    });
+
+    return mappedLiftNamesToProgress;
   }
 
   return [];
